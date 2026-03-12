@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SURYA — Meta Ads Execution Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&display=swap');
+
+  :root {
+    --bg: #F7F5F2;
+    --bg2: #FFFFFF;
+    --bg3: #F0EDE8;
+    --gold: #9A6F2A;
+    --goldl: #7A5520;
+    --goldd: #7A5520;
+    --gold-bg: #FDF6E8;
+    --text: #1A1814;
+    --text2: #4A4540;
+    --text3: #6B6560;
+    --grey: #999;
+    --grey2: #AAA;
+    --red: #B83232;
+    --red-bg: #FEF3F3;
+    --green: #2A7A35;
+    --green-bg: #F3FAF4;
+    --border: #E0D8CE;
+    --border2: #CCC4B8;
+    --done-bg: #F3FAF4;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 16px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 2rem 3rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem;
+    position: sticky;
+    top: 0;
+    background: var(--bg2);
+    z-index: 100;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+  }
+  .header-left h1 {
+    font-size: 2.4rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--text);
+  }
+  .header-left p {
+    font-size: 0.85rem;
+    color: var(--gold);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-family: 'DM Mono', monospace;
+    font-weight: 300;
+    margin-top: 0.15rem;
+  }
+  .progress-wrap {
+    text-align: right;
+    min-width: 200px;
+  }
+  .progress-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--text3);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .progress-bar-outer {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-bar-inner {
+    height: 100%;
+    background: linear-gradient(90deg, var(--goldd), var(--gold));
+    border-radius: 2px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+  .progress-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--gold);
+    margin-top: 0.4rem;
+  }
+
+  /* ── LAYOUT ── */
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 3rem 2rem 6rem;
+  }
+
+  /* ── PHASE HEADER ── */
+  .phase {
+    margin-bottom: 3.5rem;
+  }
+  .phase-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--gold);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+  .phase-title {
+    font-size: 1.9rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.02em;
+  }
+  .phase-desc {
+    font-size: 1rem;
+    color: var(--text3);
+    font-style: italic;
+    margin-bottom: 1.5rem;
+    max-width: 680px;
+  }
+  .phase-rule {
+    height: 1px;
+    background: var(--border);
+    margin-bottom: 1.5rem;
+  }
+  .gold-rule {
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+    margin-bottom: 2rem;
+    opacity: 0.5;
+  }
+
+  /* ── STEP CARD ── */
+  .step {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    margin-bottom: 0.75rem;
+    transition: border-color 0.2s, background 0.2s;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .step.done {
+    background: var(--done-bg);
+    border-color: #B8DCC0;
+  }
+  .step.done .step-header {
+    opacity: 0.6;
+  }
+  .step-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.1rem 1.4rem;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s;
+  }
+  .step-header:hover {
+    background: #FAFAF8;
+  }
+  .check-wrap {
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+  }
+  .check {
+    width: 20px;
+    height: 20px;
+    border: 1.5px solid var(--border2);
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, border-color 0.2s;
+    cursor: pointer;
+    background: transparent;
+  }
+  .step.done .check {
+    background: var(--green);
+    border-color: var(--green);
+  }
+  .check svg { display: none; }
+  .step.done .check svg { display: block; }
+
+  .step-meta {
+    flex: 1;
+    min-width: 0;
+  }
+  .step-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--grey2);
+    letter-spacing: 0.2em;
+    margin-bottom: 0.2rem;
+  }
+  .step-title {
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.4;
+  }
+  .step.done .step-title { color: var(--green); }
+
+  .expand-btn {
+    flex-shrink: 0;
+    color: var(--grey);
+    font-size: 1.2rem;
+    line-height: 1;
+    margin-top: 0.1rem;
+    transition: transform 0.2s;
+  }
+  .step.open .expand-btn { transform: rotate(45deg); color: var(--gold); }
+
+  /* ── STEP BODY ── */
+  .step-body {
+    display: none;
+    padding: 0 1.4rem 1.4rem 3.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .step.open .step-body { display: block; }
+
+  .step-body p {
+    color: var(--text2);
+    font-size: 0.97rem;
+    margin-bottom: 0.8rem;
+    line-height: 1.7;
+  }
+  .step-body p strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  /* Instructions list */
+  .instructions {
+    list-style: none;
+    margin: 0.8rem 0 1.2rem;
+  }
+  .instructions li {
+    display: flex;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+    color: var(--text2);
+    margin-bottom: 0.6rem;
+    line-height: 1.6;
+  }
+  .instructions li::before {
+    content: attr(data-n);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--gold);
+    background: var(--gold-bg);
+    border: 1px solid #D4AA60;
+    min-width: 22px;
+    height: 22px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+  }
+  .instructions li strong { color: var(--text); font-weight: 600; }
+  .instructions li em { color: var(--goldl); font-style: italic; }
+
+  /* Copy block */
+  .copy-block {
+    background: var(--gold-bg);
+    border: 1px solid #D4AA60;
+    border-left: 3px solid var(--gold);
+    padding: 1rem 1.2rem;
+    margin: 0.8rem 0;
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 0.97rem;
+    color: var(--goldl);
+    line-height: 1.75;
+    position: relative;
+  }
+  .copy-block .copy-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--text3);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-style: normal;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+  .copy-btn {
+    position: absolute;
+    top: 0.7rem;
+    right: 0.8rem;
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    color: var(--gold);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.5rem;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background 0.2s;
+  }
+  .copy-btn:hover { background: var(--bg3); }
+
+  /* Settings table */
+  .settings-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.8rem 0;
+    font-size: 0.9rem;
+  }
+  .settings-table th {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--text3);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-align: left;
+    padding: 0.4rem 0.8rem;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+  }
+  .settings-table td {
+    padding: 0.55rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text2);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  .settings-table td:first-child {
+    color: var(--gold);
+    font-weight: 500;
+    white-space: nowrap;
+    width: 38%;
+  }
+  .settings-table td strong { color: var(--text); font-weight: 600; }
+  .settings-table td em { color: var(--goldl); }
+  .settings-table tr:last-child td { border-bottom: none; }
+
+  /* Warning / note box */
+  .callout {
+    border-radius: 3px;
+    padding: 0.8rem 1rem;
+    margin: 0.8rem 0;
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+  .callout.warning {
+    background: var(--red-bg);
+    border: 1px solid #F5C0C0;
+    color: var(--red);
+  }
+  .callout.warning::before {
+    content: '⚠  ';
+    font-style: normal;
+  }
+  .callout.tip {
+    background: var(--green-bg);
+    border: 1px solid #B8DCC0;
+    color: #245A2E;
+  }
+  .callout.tip::before {
+    content: '→  ';
+    font-style: normal;
+    color: var(--green);
+  }
+  .callout.info {
+    background: #F0F4FF;
+    border: 1px solid #C0CCF0;
+    color: #2A3A7A;
+  }
+
+  /* Tag pills */
+  .tag {
+    display: inline-block;
+    background: var(--gold-bg);
+    border: 1px solid #D4AA60;
+    color: var(--goldl);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.5rem;
+    border-radius: 2px;
+    margin-right: 0.3rem;
+    margin-bottom: 0.3rem;
+  }
+  .tag.red { background: var(--red-bg); border-color: #F5C0C0; color: var(--red); }
+  .tag.green { background: var(--green-bg); border-color: #B8DCC0; color: var(--green); }
+
+  /* Keywords */
+  .keyword-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin: 0.6rem 0;
+  }
+  .kw {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text2);
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    padding: 0.25rem 0.6rem;
+    border-radius: 2px;
+  }
+  .kw.neg { color: var(--red); border-color: #F5C0C0; background: var(--red-bg); text-decoration: line-through; text-decoration-color: #F5C0C0; }
+
+  /* Nav sidebar dots */
+  .nav {
+    position: fixed;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    z-index: 50;
+  }
+  .nav-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--border2);
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+    border: none;
+  }
+  .nav-dot:hover, .nav-dot.active { background: var(--gold); transform: scale(1.5); }
+  .nav-dot[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    right: 14px;
+    background: var(--bg2);
+    color: var(--goldl);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    white-space: nowrap;
+    padding: 0.2rem 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+
+  @media (max-width: 700px) {
+    header { padding: 1.2rem 1rem; flex-direction: column; align-items: flex-start; }
+    .container { padding: 2rem 1rem 5rem; }
+    .nav { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <h1>SURYA</h1>
+    <p>Meta Ads · Execution Guide</p>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-label">Completion</div>
+    <div class="progress-bar-outer">
+      <div class="progress-bar-inner" id="progressBar"></div>
+    </div>
+    <div class="progress-count" id="progressCount">0 / 0 steps complete</div>
+  </div>
+</header>
+
+<nav class="nav" id="sideNav"></nav>
+
+<div class="container">
+
+<!-- ══════════════════════════════════════════════════════════════════
+     PHASE 0 — PIXEL
+══════════════════════════════════════════════════════════════════ -->
+<section class="phase" id="phase-pixel">
+  <div class="phase-label">Phase 0 — Do This First</div>
+  <div class="phase-title">Install the Meta Pixel</div>
+  <div class="phase-desc">Everything depends on this. Retargeting, BOFU, lookalike audiences — none of it works without the pixel firing on your site.</div>
+  <div class="gold-rule"></div>
+
+  <!-- Step 1 -->
+  <div class="step" id="step-1">
+    <div class="step-header" onclick="toggleStep('step-1')">
+      <div class="check-wrap">
+        <div class="check" onclick="toggleDone(event,'step-1')">
+          <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+            <path d="M1 5L4.5 8.5L11 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="step-meta">
+        <div class="step-num">0.1</div>
+        <div class="step-title">Create a Meta Pixel in Events Manager</div>
+      </div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="step-body">
+      <ol class="instructions">
+        <li data-n="1">Go to <strong>business.facebook.com</strong> → open the menu → <strong>Events Manager</strong></li>
+        <li data-n="2">Click <strong>Connect Data Sources</strong> → select <strong>Web</strong> → click <strong>Get Started</strong></li>
+        <li data-n="3">Name your pixel: <em>Maera Jewellery Pixel</em> → enter your website URL → click <strong>Continue</strong></li>
+        <li data-n="4">Select <strong>Shopify</strong> as your partner → click <strong>Next</strong></li>
+      </ol>
+      <div class="callout tip">Meta will give you a Pixel ID — copy it. You'll paste it into Shopify in the next step.</div>
+    </div>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="step" id="step-2">
+    <div class="step-header" onclick="toggleStep('step-2')">
+      <div class="check-wrap">
+        <div class="check" onclick="toggleDone(event,'step-2')">
+          <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+            <path d="M1 5L4.5 8.5L11 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="step-meta">
+        <div class="step-num">0.2</div>
+        <div class="step-title">Connect Pixel to Shopify</div>
+      </div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="step-body">
+      <ol class="instructions">
+        <li data-n="1">In Shopify Admin → go to <strong>Sales Channels → Facebook & Instagram</strong></li>
+        <li data-n="2">If not installed: click <strong>Add sales channel</strong> → Facebook &amp; Instagram</li>
+        <li data-n="3">Click <strong>Settings</strong> → <strong>Data Sharing</strong> → set to <strong>Maximum</strong></li>
+        <li data-n="4">Under <em>Meta Pixel</em>, paste your Pixel ID → click <strong>Confirm</strong></li>
+        <li data-n="5">Enable <strong>Customer events</strong> — this powers Conversions API (server-side tracking)</li>
+      </ol>
+      <div class="callout warning">Do NOT skip setting Data Sharing to Maximum — this enables server-side Conversions API which dramatically improves tracking accuracy, especially on iOS devices.</div>
+    </div>
+  </div>
+
+  <!-- Step 3 -->
+  <div class="step" id="step-3">
+    <div class="step-header" onclick="toggleStep('step-3')">
+      <div class="check-wrap">
+        <div class="check" onclick="toggleDone(event,'step-3')">
+          <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+            <path d="M1 5L4.5 8.5L11 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="step-meta">
+        <div class="step-num">0.3</div>
+        <div class="step-title">Verify pixel is firing correctly</div>
+      </div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="step-body">
+      <ol class="instructions">
+        <li data-n="1">Install the Chrome extension <strong>Meta Pixel Helper</strong></li>
+        <li data-n="2">Visit your website — the extension icon should turn green and show <em>PageView</em> firing</li>
+        <li data-n="3">In Events Manager → <strong>Test Events</strong> → enter your website URL → click <strong>Open Website</strong></li>
+        <li data-n="4">Browse your site — confirm PageView, ViewContent, and any collection events appear in the test panel</li>
+      </ol>
+      <div class="callout tip">Give the pixel 24 hours to start registering traffic data before launching campaigns. You can set up campaigns now and launch tomorrow.</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════════════
+     PHASE 1 — FOUNDATIONS
+══════════════════════════════════════════════════════════════════ -->
+<section class="phase" id="phase-foundations">
+  <div class="phase-label">Phase 1 — Before You Build Campaigns</div>
+  <div class="phase-title">Account Foundations</div>
+  <div class="phase-desc">Set up the building blocks every campaign will pull from. Do this once — everything else references it.</div>
+  <div class="gold-rule"></div>
+
+  <!-- Step 4 -->
+  <div class="step" id="step-4">
+    <div class="step-header" onclick="toggleStep('step-4')">
+      <div class="check-wrap">
+        <div class="check" onclick="toggleDone(event,'step-4')">
+          <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+            <path d="M1 5L4.5 8.5L11 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="step-meta">
+        <div class="step-num">1.1</div>
+        <div class="step-title">Set your ad account currency, time zone & spending limit</div>
+      </div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="step-body">
+      <ol class="instructions">
+        <li data-n="1">Meta Ads Manager → <strong>Settings</strong> → <strong>Ad Account Settings</strong></li>
+        <li data-n="2">Currency: <strong>CAD</strong> (Canadian Dollar — matches your budget)</li>
+        <li data-n="3">Time zone: Set to your operating time zone (Colombo = UTC+5:30)</li>
+        <li data-n="4">Set an <strong>Account Spending Limit</strong> of <strong>CAD $870</strong> — this is a hard ceiling so you never overspend</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- Step 5 — Custom Audiences -->
+  <div class="step" id="step-5">
+    <div class="step-header" onclick="toggleStep('step-5')">
+      <div class="check-wrap">
+        <div class="check" onclick="toggleDone(event,'step-5')">
+          <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+            <path d="M1 5L4.5 8.5L11 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="step-meta">
+        <div class="step-num">1.2</div>
+        <div class="step-title">Create your 4 Custom Audiences (retargeting pools)</div>
+      </div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="step-body">
+      <p>Go to <strong>Ads Manager → Audiences → Create Audience → Custom Audience</strong>. Build all four now — they'll start populating immediately.</p>
+      <table class="settings-table">
+        <thead><tr><th>Audience Name</th><th>Source & Settings</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>SURYA — Website All (30d)</td>
+            <td>Source: <strong>Website</strong> · All website visitors · Last <strong>30 days</strong></td>
+          </tr>
+          <tr>
+            <td>SURYA — Website All (14d)</td>
+            <td>Source: <strong>Website</strong> · All website visitors · Last <strong>14 days</strong></td>
+          </tr>
+          <tr>
+            <td>SURYA — Video 50%+ Viewers</td>
+            <td>Source: <strong>Video</strong> · People who viewed at least 50% · Select your IG videos · Last <strong>60 days</strong></td>
+          </tr>
+          <tr>
+            <td>SURYA — IG Engagers (60d)</td>
+            <td>Source: <strong>Instagram Account</strong> · Everyone who engaged with account · Last <strong>60 days</strong></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="callout tip">If you have existing customer emails (especially French buyers), also create a Customer List custom audience — upload as CSV with email column. This seeds your France lookalike later.</div>
+    </div>
+  </div>
+
+  <!-- Step 6 — Upload creative assets -->
+  <div class="step" id="step-6">
+    <div class="step-header" onclick="toggleStep('step-6')">
+      <div class="check-wrap">
+        <div class="check" onclick="toggleDone(event,'step-6')">
+          <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+            <path d="M1 5L4.5 8.5L11 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="step-meta">
+        <div class="step-num">1.3</div>
+        <div class="step-title">Upload all creative assets to Meta Media Library</div>
+      </div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="step-body">
+      <p>Go to <strong>Ads Manager → Creative Hub → Media Library</strong>. Upload and name every file before building any ad.</p>
+      <table class="settings-table">
+        <thead><tr><th>Asset Name</th><th>Format</th><th>Used In</th></tr></thead>
+        <tbody>
+          <tr><td>SURYA_HeroTeaser_9x16</td><td>Video · 9:16 · 5s</td><td>Campaign A / Ad Set 1 + 2</td></tr>
+          <tr><td>SURYA_OriginReel_9x16</td><td>Video · 9:16 · 15–30s</td><td>Campaign A / Ad Set 1 + 2</td></tr>
+          <tr><td>SURYA_Carousel_Slide1–5</td><td>Image · 1:1 · 5 images</td><td>Campaign B / Ad Set 3 (MOFU)</td></tr>
+          <tr><td>SURYA_StaticPoster_4x5</td><td>Image · 4:5</td><td>Campaign B / Ad Set 4 (BOFU)</td></tr>
+        </tbody>
+      </table>
+      <div class="callout warning">Video: Max 4GB. Minimum 720p. Use MP4 or MOV. Reels must be 9:16. Captions should be burned into the video — do NOT rely on auto-captions for luxury content.</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════════════
+     PHASE 2 — CAMPAIGN A (AWARENESS)
+══════════════════════════════════════════════════════════════════ -->
+<section class="phase" id="phase-campaignA">
+  <div class="phase-label">Phase 2 — Campaign A</div>
+  <div class="phase-title">Awareness Campaign — TOFU</div>
+  <div class="phase-desc">This campaign does one thing: get SURYA in front of cold audiences elegantly. No selling. No CTA that says "Buy". Pure signal.</div>
+  <div class="gold-rule"></div>
+
+  <!-- Step 7 -->
+  <div class="step" id="step-7">
+    <div class="step-header" onclick="toggleStep('step-7')">
+      <div class="check-wrap">
+        <div class="check" onclick="toggleDone(event,'step-7')">
+          <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+            <path d="M1 5L4.5 8.5L11 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="step-meta">
+        <div class="step-num">2.1</div>
+        <div class="step-title">Create Campaign A — settings</div>
+      </div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="step-body">
+      <ol class="instructions">
+        <li data-n="1">Ads Manager → <strong>Create</strong> → select <strong>Awareness</strong> objective</li>
+        <li data-n="2">Name: <em>SURYA — Campaign A — Awareness TOFU</em></li>
+        <li data-n="3">Buying type: <strong>Auction</strong></li>
+        <li data-n="4">Campaign budget optimisation: <strong>OFF</strong> — you'll control budget at ad set level</li>
+        <li data-n="5">Campaign spending limit: leave blank (controlled at ad set level)</li>
+        <li data-n="6">Advantage campaign budget: <strong>OFF</strong></li>
+      </ol>
+      <div class="callout tip">Keep Advantage+ OFF for Weeks 1–2. You need manual control to kill underperformers fast. Only turn it on for proven performers in Week 3.</div>
+    </div>
+  </div>
+
+  <!-- Step 8 — Ad Set 1 Sri Lanka -->
+  <div class="step" id="step-8">
+    <div class="step-header" onclick="toggleStep('step-8')">
+      <div class="check-wrap">
+        <div class="check" onclick="toggleDone(event,'step-8')">
+          <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+            <path d="M1 5L4.5 8.5L11 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="step-meta">
+        <div class="step-num">2.2</div>
+        <div class="step-title">Ad Set 1 — Sri Lanka (TOFU)</div>
+      </div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="step-body">
+      <table class="settings-table">
+        <thead><tr><th>Setting</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Ad Set Name</td><td><em>AS1 — Sri Lanka — TOFU — Cold</em></td></tr>
+          <tr><td>Conversion Location</td><td>Instagram Profile</td></tr>
+          <tr><td>Performance Goal</td><td>Maximise reach</td></tr>
+          <tr><td>Daily Budget</td><td><strong>CAD $8/day</strong></td></tr>
+          <tr><td>Schedule</td><td>Start Day 1. Run continuously.</td></tr>
+          <tr><td>Locations</td><td>Sri Lanka → <strong>Add specific cities:</strong> Colombo, Sri Jayawardenepura Kotte, Dehiwala-Mount Lavinia, Nugegoda, Battaramulla, Rajagiriya, Maharagama, Wattala, Negombo, Gampaha, Kandy, Galle</td></tr>
+          <tr><td>Age</td><td>25 – 55</td></tr>
+          <tr><td>Gender</td><td>All</td></tr>
+          <tr><td>Detailed Targeting</td><td>Interests: <em>Fine jewellery, Bespoke jewellery, Ceylon sapphire, Gemstone jewellery, Cartier, Van Cleef & Arpels, engagement rings, luxury goods</em></td></tr>
+          <tr><td>Advantage+ Targeting</td><td><strong>OFF</strong></td></tr>
+          <tr><td>Placements</td><td>Manual → <strong>Instagram only</strong> → Feed + Reels + Stories</td></tr>
+          <tr><td>Exclude</td><td>Custom Audience: SURYA — Website All (30d) · SURYA — IG Engagers (60d)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Step 9 — Ad Set 2 Diaspora -->
+  <div class="step" id="step-9">
+    <div class="step-header" onclick="toggleStep('step-9')">
+      <div class="check-wrap">
+        <div class="check" onclick="toggleDone(event,'step-9')">
+          <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+            <path d="M1 5L4.5 8.5L11 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="step-meta">
+        <div class="step-num">2.3</div>
+        <div class="step-title">Ad Set 2 — Sri Lankan Diaspora (TOFU)</div>
+      </div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="step-body">
+      <table class="settings-table">
+        <thead><tr><th>Setting</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Ad Set Name</td><td><em>AS2 — Diaspora — TOFU — Cold</em></td></tr>
+          <tr><td>Daily Budget</td><td><strong>CAD $8/day</strong></td></tr>
+          <tr><td>Locations</td><td>United Arab Emirates (Dubai, Abu Dhabi) · United Kingdom (London, Leicester, Birmingham) · Australia (Sydney, Melbourne) · Canada (Toronto, Vancouver, Mississauga)</td></tr>
+          <tr><td>Age</td><td>27 – 55</td></tr>
+          <tr><td>Gender</td><td>All</td></tr>
+          <tr><td>Detailed Targeting</td><td>Interests: <em>Sri Lanka, Tamil culture, Sinhalese culture, South Asian diaspora, Ceylon, luxury jewellery, fine jewellery, Cartier</em> — AND — behaviours: <em>Engaged shoppers, Luxury goods</em></td></tr>
+          <tr><td>Placements</td><td>Manual → Instagram Feed + Reels + Stories</td></tr>
+          <tr><td>Exclude</td><td>Same custom audiences as Ad Set 1</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Step 10 — France F1 -->
+  <div class="step" id="step-10">
+    <div class="step-header" onclick="toggleStep('step-10')">
+      <div class="check-wrap">
+        <div class="check" onclick="toggleDone(event,'step-10')">
+          <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+            <path d="M1 5L4.5 8.5L11 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="step-meta">
+        <div class="step-num">2.4</div>
+        <div class="step-title">Ad Set 3 — France F1 (French Luxury Buyers)</div>
+      </div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="step-body">
+      <div class="callout info">Launch this on <strong>Day 3</strong> — not Day 1. Let the pixel collect some data first. This audience needs a different ad (Copy Set 2) — do not run the same copy as Sri Lanka.</div>
+      <table class="settings-table">
+        <thead><tr><th>Setting</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Ad Set Name</td><td><em>AS3 — France F1 — Luxury Buyers — TOFU</em></td></tr>
+          <tr><td>Daily Budget</td><td><strong>CAD $3.50/day</strong></td></tr>
+          <tr><td>Locations</td><td>France → Add specific cities/postcodes: <em>Paris (75001–75008, 75016), Neuilly-sur-Seine, Saint-Germain-en-Laye, Versailles, Boulogne-Billancourt</em></td></tr>
+          <tr><td>Age</td><td>30 – 65</td></tr>
+          <tr><td>Detailed Targeting</td><td>Interests: <em>Cartier, Boucheron, Chaumet, Van Cleef & Arpels, Place Vendôme, Haute joaillerie, Fine jewellery, Luxury goods</em></td></tr>
+          <tr><td>Language</td><td>French OR English — do NOT restrict to one</td></tr>
+          <tr><td>Placements</td><td>Manual → Instagram Feed + Reels</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Step 11 — France F2 -->
+  <div class="step" id="step-11">
+    <div class="step-header" onclick="toggleStep('step-11')">
+      <div class="check-wrap">
+        <div class="check" onclick="toggleDone(event,'step-11')">
+          <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+            <path d="M1 5L4.5 8.5L11 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="step-meta">
+        <div class="step-num">2.5</div>
+        <div class="step-title">Ad Set 4 — France F2 (Sri Lankan Diaspora Paris)</div>
+      </div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="step-body">
+      <table class="settings-table">
+        <thead><tr><th>Setting</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Ad Set Name</td><td><em>AS4 — France F2 — Diaspora Paris — TOFU</em></td></tr>
+          <tr><td>Daily Budget</td><td><strong>CAD $1.50/day</strong></td></tr>
+          <tr><td>Locations</td><td>France → Greater Paris region (Île-de-France)</td></tr>
+          <tr><td>Age</td><td>25 – 55</td></tr>
+          <tr><td>Detailed Targeting</td><td>Interests: <em>Sri Lanka, Colombo, Tamil Nadu, South Asian diaspora, Ceylon</em></td></tr>
+          <tr><td>Language</td><td>No restriction</td></tr>
+          <tr><td>Placements</td><td>Manual → Instagram Feed + Reels + Stories</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Step 12 — TOFU Ads -->
+  <div class="step" id="step-12">
+    <div class="step-header" onclick="toggleStep('step-12')">
+      <div class="check-wrap">
+        <div class="check" onclick="toggleDone(event,'step-12')">
+          <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+            <path d="M1 5L4.5 8.5L11 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="step-meta">
+        <div class="step-num">2.6</div>
+        <div class="step-title">Create the TOFU ads — Copy Sets 1 & 2</div>
+      </div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="step-body">
+      <p>Create <strong>two separate ads</strong> inside each ad set — the Hero Teaser (5s) and the Origin Reel (15–30s). Test both. Kill whichever has lower completion rate after CAD $15 spend.</p>
+
+      <div class="copy-block">
+        <span class="copy-label">Copy Set 1 — Cold Awareness Global (Ad Sets 1 + 2)</span>
+        <button class="copy-btn" onclick="copyText(this, 'There are stones. And then there are stones cut with a geometry engineered to transform light itself.\n\nSURYA is a gemstone collection from Ceylon — cut not just to hold light, but to awaken it from within.\n\nBlue Sapphires. Bi-colour Green. Pink. White.\n\nHand-selected. Proprietary cut. Maera Jewellery.')">Copy</button>
+        There are stones. And then there are stones cut with a geometry engineered to transform light itself.<br><br>
+        SURYA is a gemstone collection from Ceylon — cut not just to hold light, but to awaken it from within.<br><br>
+        Blue Sapphires. Bi-colour Green. Pink. White.<br><br>
+        Hand-selected. Proprietary cut. Maera Jewellery.
+      </div>
+
+      <table class="settings-table" style="margin-top:0.8rem">
+        <thead><tr><th>Field</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Headline</td><td>SURYA. A Cut Engineered for Brilliance.</td></tr>
+          <tr><td>CTA Button</td><td><strong>Learn More</strong> (link to collection page)</td></tr>
+          <tr><td>Creative</td><td>SURYA_HeroTeaser_9x16 + SURYA_OriginReel_9x16</td></tr>
+        </tbody>
+      </table>
+
+      <div class="copy-block" style="margin-top:1rem">
+        <span class="copy-label">Copy Set 2 — France F1 Only (Ad Set 3)</span>
+        <button class="copy-btn" onclick="copyText(this, 'The maisons of Place Vendôme have always known what Ceylon means.\n\nThe same origin that supplies the rarest stones in the great archives. A proprietary cut of rare sculptural precision — now available direct from the island.\n\nSURYA by Maera Jewellery.')">Copy</button>
+        The maisons of Place Vendôme have always known what Ceylon means.<br><br>
+        The same origin that supplies the rarest stones in the great archives. A proprietary cut of rare sculptural precision — now available direct from the island.<br><br>
+        SURYA by Maera Jewellery.
+      </div>
+
+      <table class="settings-table" style="margin-top:0.8rem">
+        <thead><tr><th>Field</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Headline (F1)</td><td>From Ceylon. A Sculptural Cut of Rare Precision.</td></tr>
+          <tr><td>Headline (F2)</td><td>The Finest Stones from Home.</td></tr>
+          <tr><td>CTA Button</td><td><strong>Learn More</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════════════
+     PHASE 3 — CAMPAIGN B (MOFU + BOFU)
+══════════════════════════════════════════════════════════════════ -->
+<section class="phase" id="phase-campaignB">
+  <div class="phase-label">Phase 3 — Campaign B</div>
+  <div class="phase-title">Sales Campaign — MOFU + BOFU</div>
+  <div class="phase-desc">This campaign converts warmer audiences. Education first (MOFU), then scarcity (BOFU). Run BOFU to retargeting audiences only — never cold.</div>
+  <div class="gold-rule"></div>
+
+  <!-- Step 13 -->
+  <div class="step" id="step-13">
+    <div class="step-header" onclick="toggleStep('step-13')">
+      <div class="check-wrap">
+        <div class="check" onclick="toggleDone(event,'step-13')">
+          <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+            <path d="M1 5L4.5 8.5L11 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="step-meta">
+        <div class="step-num">3.1</div>
+        <div class="step-title">Create Campaign B — settings</div>
+      </div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="step-body">
+      <ol class="instructions">
+        <li data-n="1">Create → objective: <strong>Leads</strong> (use this instead of Sales — you're converting to DM enquiry, not checkout)</li>
+        <li data-n="2">Name: <em>SURYA — Campaign B — MOFU + BOFU</em></li>
+        <li data-n="3">Buying type: <strong>Auction</strong></li>
+        <li data-n="4">Campaign Budget Optimisation: <strong>OFF</strong></li>
+      </ol>
+      <div class="callout tip">Use <strong>Leads</strong> objective, not Sales — your conversion is a DM or contact form enquiry, not a tracked purchase. This tells Meta to find people likely to message or click through, not checkout.</div>
+    </div>
+  </div>
+
+  <!-- Step 14 — MOFU Ad Set -->
+  <div class="step" id="step-14">
+    <div class="step-header" onclick="toggleStep('step-14')">
+      <div class="check-wrap">
+        <div class="check" onclick="toggleDone(event,'step-14')">
+          <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+            <path d="M1 5L4.5 8.5L11 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="step-meta">
+        <div class="step-num">3.2</div>
+        <div class="step-title">Ad Set 5 — MOFU (Education / Consideration)</div>
+      </div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="step-body">
+      <div class="callout info">Launch this on <strong>Day 8</strong> (Week 2). The audience needs to have seen the TOFU reel first.</div>
+      <table class="settings-table">
+        <thead><tr><th>Setting</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Ad Set Name</td><td><em>AS5 — MOFU — Education — All Markets</em></td></tr>
+          <tr><td>Daily Budget</td><td><strong>CAD $9/day</strong></td></tr>
+          <tr><td>Custom Audiences (include)</td><td>SURYA — Video 50%+ Viewers · SURYA — IG Engagers (60d)</td></tr>
+          <tr><td>Locations</td><td>Sri Lanka + UAE + UK + Australia + Canada + France</td></tr>
+          <tr><td>Age</td><td>25 – 55</td></tr>
+          <tr><td>Exclude</td><td>SURYA — Website All (14d) — these go to BOFU instead</td></tr>
+          <tr><td>Placements</td><td>Manual → Instagram Feed + Stories</td></tr>
+          <tr><td>Ad Format</td><td>Carousel (5 slides)</td></tr>
+        </tbody>
+      </table>
+
+      <div class="copy-block" style="margin-top:1rem">
+        <span class="copy-label">Copy Set 3 — MOFU Carousel</span>
+        <button class="copy-btn" onclick="copyText(this, 'Most cuts are designed to maximise size.\n\nThe SURYA cut was designed to maximise truth.\n\nA sculptural geometry carved inward — the same principle found in Sri Lankan Ves Muhuna ritual mask-making, where what is removed reveals the spirit of the form.\n\nThis is not a trend. This is a tradition.\n\nSURYA by Maera Jewellery.')">Copy</button>
+        Most cuts are designed to maximise size.<br><br>
+        The SURYA cut was designed to maximise truth.<br><br>
+        A sculptural geometry carved inward — the same principle found in Sri Lankan Ves Muhuna ritual mask-making, where what is removed reveals the spirit of the form.<br><br>
+        This is not a trend. This is a tradition.<br><br>
+        SURYA by Maera Jewellery.
+      </div>
+      <table class="settings-table">
+        <thead><tr><th>Field</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Headline</td><td>Why the SURYA Cut Is Unlike Any Other</td></tr>
+          <tr><td>CTA</td><td><strong>Learn More</strong></td></tr>
+          <tr><td>Each Carousel Card CTA</td><td>Learn More (all 5 cards)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Step 15 — BOFU Ad Set -->
+  <div class="step" id="step-15">
+    <div class="step-header" onclick="toggleStep('step-15')">
+      <div class="check-wrap">
+        <div class="check" onclick="toggleDone(event,'step-15')">
+          <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+            <path d="M1 5L4.5 8.5L11 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="step-meta">
+        <div class="step-num">3.3</div>
+        <div class="step-title">Ad Set 6 — BOFU (Retargeting / Conversion)</div>
+      </div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="step-body">
+      <div class="callout info">Launch on <strong>Day 15</strong> (Week 3). This audience has seen your content twice and visited your site. Now close.</div>
+      <table class="settings-table">
+        <thead><tr><th>Setting</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Ad Set Name</td><td><em>AS6 — BOFU — Retargeting — All Markets</em></td></tr>
+          <tr><td>Daily Budget</td><td><strong>CAD $8/day</strong></td></tr>
+          <tr><td>Custom Audiences (include)</td><td>SURYA — Website All (30d) · SURYA — Website All (14d)</td></tr>
+          <tr><td>Locations</td><td>Worldwide — follow the pixel, not geo</td></tr>
+          <tr><td>Advantage+ Audience</td><td><strong>OFF</strong></td></tr>
+          <tr><td>Placements</td><td>Manual → Instagram Feed (4:5) + Stories</td></tr>
+          <tr><td>Ad Format</td><td>Single image — SURYA_StaticPoster_4x5</td></tr>
+        </tbody>
+      </table>
+
+      <div class="copy-block" style="margin-top:1rem">
+        <span class="copy-label">Copy Set 4 — BOFU Retargeting</span>
+        <button class="copy-btn" onclick="copyText(this, 'You have already seen it.\n\nNow consider what it means to own the only one.\n\nThe SURYA Collection is limited. Each stone is hand-selected from Ceylon\'s finest rough, cut with a proprietary geometry of extraordinary rarity.\n\nPriced from LKR 200,000. Made to order. Enquire privately.')">Copy</button>
+        You have already seen it.<br><br>
+        Now consider what it means to own the only one.<br><br>
+        The SURYA Collection is limited. Each stone is hand-selected from Ceylon's finest rough, cut with a proprietary geometry of extraordinary rarity.<br><br>
+        Priced from LKR 200,000. Made to order. Enquire privately.
+      </div>
+      <table class="settings-table">
+        <thead><tr><th>Field</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Headline</td><td>Limited. Unrepeatable. Yours.</td></tr>
+          <tr><td>CTA</td><td><strong>Send Message</strong> (links to Instagram DM)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════════════
+     PHASE 4 — WEEKLY RULES
+══════════════════════════════════════════════════════════════════ -->
+<section class="phase" id="phase-rules">
+  <div class="phase-label">Phase 4 — Ongoing</div>
+  <div class="phase-title">Weekly Optimisation Rules</div>
+  <div class="phase-desc">Check these every 3 days. Do not over-optimise. Make decisions based on data, not anxiety.</div>
+  <div class="gold-rule"></div>
+
+  <!-- Step 16 -->
+  <div class="step" id="step-16">
+    <div class="step-header" onclick="toggleStep('step-16')">
+      <div class="check-wrap">
+        <div class="check" onclick="toggleDone(event,'step-16')">
+          <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+            <path d="M1 5L4.5 8.5L11 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="step-meta">
+        <div class="step-num">4.1</div>
+        <div class="step-title">Kill signals — pause immediately if these trigger</div>
+      </div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="step-body">
+      <table class="settings-table">
+        <thead><tr><th>Metric</th><th>Kill Threshold</th></tr></thead>
+        <tbody>
+          <tr><td>Link CTR</td><td>Any ad set below <strong class="tag red">0.8%</strong> after spending CAD $15 → Pause</td></tr>
+          <tr><td>Video completion</td><td>Below <strong class="tag red">25%</strong> completion on Hero Teaser → Replace creative</td></tr>
+          <tr><td>CPM Sri Lanka</td><td>Above <strong class="tag red">CAD $22</strong> → Narrow geo or pause</td></tr>
+          <tr><td>CPM Diaspora</td><td>Above <strong class="tag red">CAD $28</strong> → Tighten interest stack</td></tr>
+          <tr><td>France F1 CTR</td><td>Below <strong class="tag red">1.2%</strong> after CAD $20 → Rewrite copy or pause F1</td></tr>
+          <tr><td>Zero DMs after Week 2</td><td>If MOFU + BOFU generate zero enquiries after full Week 2 → Review landing page & DM CTA</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Step 17 -->
+  <div class="step" id="step-17">
+    <div class="step-header" onclick="toggleStep('step-17')">
+      <div class="check-wrap">
+        <div class="check" onclick="toggleDone(event,'step-17')">
+          <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+            <path d="M1 5L4.5 8.5L11 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="step-meta">
+        <div class="step-num">4.2</div>
+        <div class="step-title">Scale signals — do these when performance confirms</div>
+      </div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="step-body">
+      <table class="settings-table">
+        <thead><tr><th>Trigger</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td>Day 10 — top performer</td><td>Give the best ad set <strong>60% of remaining weekly Meta budget</strong></td></tr>
+          <tr><td>France F1 first conversion</td><td>Double F1 budget immediately (CAD $3.50 → $7.00)</td></tr>
+          <tr><td>ROAS ≥ 3× on any ad set</td><td>Increase that ad set's daily budget by 30%. Consider turning on Advantage+.</td></tr>
+          <tr><td>Retargeting pool > 300 users</td><td>Create a <strong>1% Lookalike Audience</strong> from "SURYA — Website All (30d)" — target same geos as TOFU</td></tr>
+          <tr><td>Week 4</td><td>Run only the top 2 performers. Pause everything else. Concentrate budget.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Step 18 — Google next -->
+  <div class="step" id="step-18">
+    <div class="step-header" onclick="toggleStep('step-18')">
+      <div class="check-wrap">
+        <div class="check" onclick="toggleDone(event,'step-18')">
+          <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+            <path d="M1 5L4.5 8.5L11 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="step-meta">
+        <div class="step-num">4.3</div>
+        <div class="step-title">When to launch Google Ads</div>
+      </div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="step-body">
+      <p>Launch Google on <strong>Day 10–11</strong> (mid-Week 2). By then:</p>
+      <ol class="instructions">
+        <li data-n="1">Your Meta TOFU campaigns have been running ~10 days — people are searching for you</li>
+        <li data-n="2">Your pixel has enough data for Google to create a Customer Match audience from site visitors</li>
+        <li data-n="3">You'll know which geographic markets are actually responding (use that to inform Google geo targeting)</li>
+      </ol>
+      <div class="callout tip">Google Search captures people actively searching "Ceylon sapphire ring" or "Maera Jewellery" — these are your highest-intent buyers. Budget: CAD $140 Search + CAD $70 Display Retargeting.</div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /container -->
+
+<script>
+  function toggleStep(id) {
+    const el = document.getElementById(id);
+    el.classList.toggle('open');
+  }
+
+  function toggleDone(e, id) {
+    e.stopPropagation();
+    const el = document.getElementById(id);
+    el.classList.toggle('done');
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const all = document.querySelectorAll('.step');
+    const done = document.querySelectorAll('.step.done');
+    const pct = all.length ? Math.round((done.length / all.length) * 100) : 0;
+    document.getElementById('progressBar').style.width = pct + '%';
+    document.getElementById('progressCount').textContent = `${done.length} / ${all.length} steps complete`;
+  }
+
+  function copyText(btn, text) {
+    navigator.clipboard.writeText(text).then(() => {
+      const orig = btn.textContent;
+      btn.textContent = 'Copied';
+      btn.style.background = '#0A2A00';
+      setTimeout(() => {
+        btn.textContent = orig;
+        btn.style.background = '';
+      }, 1800);
+    });
+  }
+
+  // Side nav
+  const phases = document.querySelectorAll('.phase');
+  const nav = document.getElementById('sideNav');
+  const titles = ['Pixel', 'Foundations', 'Campaign A', 'Campaign B', 'Rules'];
+  phases.forEach((ph, i) => {
+    const dot = document.createElement('button');
+    dot.className = 'nav-dot';
+    dot.title = titles[i] || '';
+    dot.onclick = () => ph.scrollIntoView({ behavior: 'smooth' });
+    nav.appendChild(dot);
+  });
+
+  // Scroll observer for nav dots
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const idx = Array.from(phases).indexOf(entry.target);
+        document.querySelectorAll('.nav-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+      }
+    });
+  }, { threshold: 0.3 });
+  phases.forEach(p => observer.observe(p));
+
+  updateProgress();
+</script>
+</body>
+</html>
