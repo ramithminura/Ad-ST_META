@@ -3,489 +3,175 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SURYA — Meta Ads Execution Guide</title>
+<title>SURYA — Paid Ads Execution Guide</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&display=swap');
-
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Mono:wght@300;400;500&display=swap');
   :root {
-    --bg: #F7F5F2;
-    --bg2: #FFFFFF;
-    --bg3: #F0EDE8;
-    --gold: #9A6F2A;
-    --goldl: #7A5520;
-    --goldd: #7A5520;
-    --gold-bg: #FDF6E8;
-    --text: #1A1814;
-    --text2: #4A4540;
-    --text3: #6B6560;
-    --grey: #999;
-    --grey2: #AAA;
-    --red: #B83232;
-    --red-bg: #FEF3F3;
-    --green: #2A7A35;
-    --green-bg: #F3FAF4;
-    --border: #E0D8CE;
-    --border2: #CCC4B8;
-    --done-bg: #F3FAF4;
+    --bg: #F7F5F2; --bg2: #FFFFFF; --bg3: #F0EDE8;
+    --gold: #9A6F2A; --goldl: #7A5520; --goldd: #7A5520; --gold-bg: #FDF6E8;
+    --text: #1A1814; --text2: #4A4540; --text3: #6B6560;
+    --grey: #999; --grey2: #AAA; --red: #B83232; --red-bg: #FEF3F3;
+    --green: #2A7A35; --green-bg: #F3FAF4;
+    --blue: #1A3A8A; --blue-bg: #F0F4FF; --blue-border: #C0CCF0;
+    --border: #E0D8CE; --border2: #CCC4B8; --done-bg: #F3FAF4;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'EB Garamond', Georgia, serif; font-size: 16px; line-height: 1.7; min-height: 100vh; }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'EB Garamond', Georgia, serif;
-    font-size: 16px;
-    line-height: 1.7;
-    min-height: 100vh;
-  }
+  /* ── TAB BAR ── */
+  .tab-bar { background: var(--bg2); border-bottom: 1px solid var(--border); display: flex; gap: 0; position: sticky; top: 0; z-index: 200; box-shadow: 0 1px 8px rgba(0,0,0,0.06); }
+  .tab-brand { padding: 1rem 2rem; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid var(--border); min-width: 140px; }
+  .tab-brand h1 { font-size: 1.6rem; font-weight: 600; letter-spacing: 0.08em; }
+  .tab-brand p { font-size: 0.68rem; color: var(--gold); letter-spacing: 0.2em; text-transform: uppercase; font-family: 'DM Mono', monospace; }
+  .tabs { display: flex; flex: 1; }
+  .tab-btn { flex: 1; padding: 0.9rem 1.5rem; background: none; border: none; cursor: pointer; font-family: 'DM Mono', monospace; font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text3); border-bottom: 2px solid transparent; transition: all 0.2s; display: flex; flex-direction: column; align-items: center; gap: 0.2rem; }
+  .tab-btn:hover { color: var(--text); background: var(--bg3); }
+  .tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); background: var(--gold-bg); }
+  .tab-btn .tab-icon { font-size: 1.1rem; }
+  .tab-btn .tab-budget { font-size: 0.6rem; color: var(--grey2); letter-spacing: 0.1em; }
+  .tab-btn.active .tab-budget { color: var(--goldl); }
+  .progress-wrap { padding: 0.9rem 1.5rem; text-align: right; display: flex; flex-direction: column; justify-content: center; min-width: 160px; border-left: 1px solid var(--border); }
+  .progress-label { font-family: 'DM Mono', monospace; font-size: 0.62rem; color: var(--text3); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.35rem; }
+  .progress-bar-outer { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .progress-bar-inner { height: 100%; background: linear-gradient(90deg, var(--goldd), var(--gold)); border-radius: 2px; transition: width 0.4s ease; width: 0%; }
+  .progress-count { font-family: 'DM Mono', monospace; font-size: 0.68rem; color: var(--gold); margin-top: 0.3rem; }
 
-  /* ── HEADER ── */
-  header {
-    border-bottom: 1px solid var(--border);
-    padding: 2rem 3rem;
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 2rem;
-    position: sticky;
-    top: 0;
-    background: var(--bg2);
-    z-index: 100;
-    box-shadow: 0 1px 8px rgba(0,0,0,0.06);
-  }
-  .header-left h1 {
-    font-size: 2.4rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    color: var(--text);
-  }
-  .header-left p {
-    font-size: 0.85rem;
-    color: var(--gold);
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    font-family: 'DM Mono', monospace;
-    font-weight: 300;
-    margin-top: 0.15rem;
-  }
-  .progress-wrap {
-    text-align: right;
-    min-width: 200px;
-  }
-  .progress-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.78rem;
-    color: var(--text3);
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    margin-bottom: 0.5rem;
-  }
-  .progress-bar-outer {
-    height: 3px;
-    background: var(--border);
-    border-radius: 2px;
-    overflow: hidden;
-  }
-  .progress-bar-inner {
-    height: 100%;
-    background: linear-gradient(90deg, var(--goldd), var(--gold));
-    border-radius: 2px;
-    transition: width 0.4s ease;
-    width: 0%;
-  }
-  .progress-count {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--gold);
-    margin-top: 0.4rem;
-  }
+  /* ── PANELS ── */
+  .panel { display: none; }
+  .panel.active { display: block; }
+  .container { max-width: 880px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
 
-  /* ── LAYOUT ── */
-  .container {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 3rem 2rem 6rem;
-  }
+  /* ── PHASE ── */
+  .phase { margin-bottom: 3rem; }
+  .phase-label { font-family: 'DM Mono', monospace; font-size: 0.68rem; color: var(--gold); letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 0.5rem; }
+  .phase-title { font-size: 1.7rem; font-weight: 600; color: var(--text); margin-bottom: 0.35rem; }
+  .phase-desc { font-size: 0.97rem; color: var(--text3); font-style: italic; margin-bottom: 1.2rem; max-width: 640px; }
+  .gold-rule { height: 2px; background: linear-gradient(90deg, var(--gold), transparent); margin-bottom: 1.5rem; opacity: 0.4; }
 
-  /* ── PHASE HEADER ── */
-  .phase {
-    margin-bottom: 3.5rem;
-  }
-  .phase-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.72rem;
-    color: var(--gold);
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    margin-bottom: 0.6rem;
-  }
-  .phase-title {
-    font-size: 1.9rem;
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 0.4rem;
-    letter-spacing: 0.02em;
-  }
-  .phase-desc {
-    font-size: 1rem;
-    color: var(--text3);
-    font-style: italic;
-    margin-bottom: 1.5rem;
-    max-width: 680px;
-  }
-  .phase-rule {
-    height: 1px;
-    background: var(--border);
-    margin-bottom: 1.5rem;
-  }
-  .gold-rule {
-    height: 2px;
-    background: linear-gradient(90deg, var(--gold), transparent);
-    margin-bottom: 2rem;
-    opacity: 0.5;
-  }
-
-  /* ── STEP CARD ── */
-  .step {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    margin-bottom: 0.75rem;
-    transition: border-color 0.2s, background 0.2s;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-  }
-  .step.done {
-    background: var(--done-bg);
-    border-color: #B8DCC0;
-  }
-  .step.done .step-header {
-    opacity: 0.6;
-  }
-  .step-header {
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-    padding: 1.1rem 1.4rem;
-    cursor: pointer;
-    user-select: none;
-    transition: background 0.15s;
-  }
-  .step-header:hover {
-    background: #FAFAF8;
-  }
-  .check-wrap {
-    flex-shrink: 0;
-    margin-top: 0.15rem;
-  }
-  .check {
-    width: 20px;
-    height: 20px;
-    border: 1.5px solid var(--border2);
-    border-radius: 3px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.2s, border-color 0.2s;
-    cursor: pointer;
-    background: transparent;
-  }
-  .step.done .check {
-    background: var(--green);
-    border-color: var(--green);
-  }
+  /* ── STEPS ── */
+  .step { background: var(--bg2); border: 1px solid var(--border); border-radius: 3px; margin-bottom: 0.6rem; transition: border-color 0.2s, background 0.2s; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+  .step.done { background: var(--done-bg); border-color: #B8DCC0; }
+  .step.done .step-header { opacity: 0.6; }
+  .step-header { display: flex; align-items: flex-start; gap: 0.9rem; padding: 1rem 1.2rem; cursor: pointer; user-select: none; transition: background 0.15s; }
+  .step-header:hover { background: #FAFAF8; }
+  .check-wrap { flex-shrink: 0; margin-top: 0.12rem; }
+  .check { width: 20px; height: 20px; border: 1.5px solid var(--border2); border-radius: 3px; display: flex; align-items: center; justify-content: center; transition: background 0.2s, border-color 0.2s; cursor: pointer; background: transparent; }
+  .step.done .check { background: var(--green); border-color: var(--green); }
   .check svg { display: none; }
   .step.done .check svg { display: block; }
-
-  .step-meta {
-    flex: 1;
-    min-width: 0;
-  }
-  .step-num {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--grey2);
-    letter-spacing: 0.2em;
-    margin-bottom: 0.2rem;
-  }
-  .step-title {
-    font-size: 1.05rem;
-    font-weight: 500;
-    color: var(--text);
-    line-height: 1.4;
-  }
+  .step-meta { flex: 1; min-width: 0; }
+  .step-num { font-family: 'DM Mono', monospace; font-size: 0.68rem; color: var(--grey2); letter-spacing: 0.2em; margin-bottom: 0.15rem; }
+  .step-title { font-size: 1rem; font-weight: 500; color: var(--text); line-height: 1.4; }
   .step.done .step-title { color: var(--green); }
-
-  .expand-btn {
-    flex-shrink: 0;
-    color: var(--grey);
-    font-size: 1.2rem;
-    line-height: 1;
-    margin-top: 0.1rem;
-    transition: transform 0.2s;
-  }
+  .expand-btn { flex-shrink: 0; color: var(--grey); font-size: 1.1rem; line-height: 1; margin-top: 0.05rem; transition: transform 0.2s; }
   .step.open .expand-btn { transform: rotate(45deg); color: var(--gold); }
-
-  /* ── STEP BODY ── */
-  .step-body {
-    display: none;
-    padding: 0 1.4rem 1.4rem 3.5rem;
-    border-top: 1px solid var(--border);
-  }
+  .step-body { display: none; padding: 0.8rem 1.2rem 1.2rem 3.2rem; border-top: 1px solid var(--border); }
   .step.open .step-body { display: block; }
+  .step-body p { color: var(--text2); font-size: 0.95rem; margin-bottom: 0.7rem; line-height: 1.7; margin-top: 0.5rem; }
+  .step-body p strong { color: var(--text); font-weight: 600; }
 
-  .step-body p {
-    color: var(--text2);
-    font-size: 0.97rem;
-    margin-bottom: 0.8rem;
-    line-height: 1.7;
-  }
-  .step-body p strong {
-    color: var(--text);
-    font-weight: 600;
-  }
-
-  /* Instructions list */
-  .instructions {
-    list-style: none;
-    margin: 0.8rem 0 1.2rem;
-  }
-  .instructions li {
-    display: flex;
-    gap: 0.75rem;
-    font-size: 0.95rem;
-    color: var(--text2);
-    margin-bottom: 0.6rem;
-    line-height: 1.6;
-  }
-  .instructions li::before {
-    content: attr(data-n);
-    font-family: 'DM Mono', monospace;
-    font-size: 0.72rem;
-    color: var(--gold);
-    background: var(--gold-bg);
-    border: 1px solid #D4AA60;
-    min-width: 22px;
-    height: 22px;
-    border-radius: 3px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    margin-top: 0.15rem;
-  }
+  /* ── INSTRUCTIONS ── */
+  .instructions { list-style: none; margin: 0.7rem 0 1rem; }
+  .instructions li { display: flex; gap: 0.7rem; font-size: 0.93rem; color: var(--text2); margin-bottom: 0.55rem; line-height: 1.6; }
+  .instructions li::before { content: attr(data-n); font-family: 'DM Mono', monospace; font-size: 0.68rem; color: var(--gold); background: var(--gold-bg); border: 1px solid #D4AA60; min-width: 22px; height: 22px; border-radius: 3px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 0.12rem; }
   .instructions li strong { color: var(--text); font-weight: 600; }
   .instructions li em { color: var(--goldl); font-style: italic; }
 
-  /* Copy block */
-  .copy-block {
-    background: var(--gold-bg);
-    border: 1px solid #D4AA60;
-    border-left: 3px solid var(--gold);
-    padding: 1rem 1.2rem;
-    margin: 0.8rem 0;
-    font-family: 'EB Garamond', serif;
-    font-style: italic;
-    font-size: 0.97rem;
-    color: var(--goldl);
-    line-height: 1.75;
-    position: relative;
-  }
-  .copy-block .copy-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.68rem;
-    color: var(--text3);
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    font-style: normal;
-    margin-bottom: 0.5rem;
-    display: block;
-  }
-  .copy-btn {
-    position: absolute;
-    top: 0.7rem;
-    right: 0.8rem;
-    background: var(--bg2);
-    border: 1px solid var(--border2);
-    color: var(--gold);
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 0.2rem 0.5rem;
-    cursor: pointer;
-    border-radius: 2px;
-    transition: background 0.2s;
-  }
+  /* ── COPY BLOCK ── */
+  .copy-block { background: var(--gold-bg); border: 1px solid #D4AA60; border-left: 3px solid var(--gold); padding: 0.9rem 1.1rem; margin: 0.7rem 0; font-family: 'EB Garamond', serif; font-style: italic; font-size: 0.95rem; color: var(--goldl); line-height: 1.75; position: relative; }
+  .copy-block .copy-label { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--text3); letter-spacing: 0.2em; text-transform: uppercase; font-style: normal; margin-bottom: 0.45rem; display: block; }
+  .copy-btn { position: absolute; top: 0.65rem; right: 0.7rem; background: var(--bg2); border: 1px solid var(--border2); color: var(--gold); font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.18rem 0.45rem; cursor: pointer; border-radius: 2px; transition: background 0.2s; }
   .copy-btn:hover { background: var(--bg3); }
 
-  /* Settings table */
-  .settings-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 0.8rem 0;
-    font-size: 0.9rem;
-  }
-  .settings-table th {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.68rem;
-    color: var(--text3);
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    text-align: left;
-    padding: 0.4rem 0.8rem;
-    background: var(--bg3);
-    border-bottom: 1px solid var(--border);
-  }
-  .settings-table td {
-    padding: 0.55rem 0.8rem;
-    border-bottom: 1px solid var(--border);
-    color: var(--text2);
-    vertical-align: top;
-    line-height: 1.5;
-  }
-  .settings-table td:first-child {
-    color: var(--gold);
-    font-weight: 500;
-    white-space: nowrap;
-    width: 38%;
-  }
+  /* ── TABLES ── */
+  .settings-table { width: 100%; border-collapse: collapse; margin: 0.7rem 0; font-size: 0.88rem; }
+  .settings-table th { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--text3); letter-spacing: 0.2em; text-transform: uppercase; text-align: left; padding: 0.4rem 0.75rem; background: var(--bg3); border-bottom: 1px solid var(--border); }
+  .settings-table td { padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); color: var(--text2); vertical-align: top; line-height: 1.5; }
+  .settings-table td:first-child { color: var(--gold); font-weight: 500; white-space: nowrap; width: 36%; }
   .settings-table td strong { color: var(--text); font-weight: 600; }
   .settings-table td em { color: var(--goldl); }
   .settings-table tr:last-child td { border-bottom: none; }
 
-  /* Warning / note box */
-  .callout {
-    border-radius: 3px;
-    padding: 0.8rem 1rem;
-    margin: 0.8rem 0;
-    font-size: 0.9rem;
-    line-height: 1.6;
-  }
-  .callout.warning {
-    background: var(--red-bg);
-    border: 1px solid #F5C0C0;
-    color: var(--red);
-  }
-  .callout.warning::before {
-    content: '⚠  ';
-    font-style: normal;
-  }
-  .callout.tip {
-    background: var(--green-bg);
-    border: 1px solid #B8DCC0;
-    color: #245A2E;
-  }
-  .callout.tip::before {
-    content: '→  ';
-    font-style: normal;
-    color: var(--green);
-  }
-  .callout.info {
-    background: #F0F4FF;
-    border: 1px solid #C0CCF0;
-    color: #2A3A7A;
-  }
+  /* ── CALLOUTS ── */
+  .callout { border-radius: 3px; padding: 0.75rem 0.95rem; margin: 0.7rem 0; font-size: 0.88rem; line-height: 1.6; }
+  .callout.warning { background: var(--red-bg); border: 1px solid #F5C0C0; color: var(--red); }
+  .callout.warning::before { content: '⚠  '; }
+  .callout.tip { background: var(--green-bg); border: 1px solid #B8DCC0; color: #245A2E; }
+  .callout.tip::before { content: '→  '; color: var(--green); }
+  .callout.info { background: var(--blue-bg); border: 1px solid var(--blue-border); color: var(--blue); }
+  .callout.info::before { content: 'ℹ  '; }
 
-  /* Tag pills */
-  .tag {
-    display: inline-block;
-    background: var(--gold-bg);
-    border: 1px solid #D4AA60;
-    color: var(--goldl);
-    font-family: 'DM Mono', monospace;
-    font-size: 0.68rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    padding: 0.15rem 0.5rem;
-    border-radius: 2px;
-    margin-right: 0.3rem;
-    margin-bottom: 0.3rem;
-  }
-  .tag.red { background: var(--red-bg); border-color: #F5C0C0; color: var(--red); }
-  .tag.green { background: var(--green-bg); border-color: #B8DCC0; color: var(--green); }
+  /* ── TAGS ── */
+  .tag { display: inline-block; font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.12rem 0.45rem; border-radius: 2px; margin-right: 0.3rem; margin-bottom: 0.2rem; }
+  .tag.red { background: var(--red-bg); border: 1px solid #F5C0C0; color: var(--red); }
+  .tag.green { background: var(--green-bg); border: 1px solid #B8DCC0; color: var(--green); }
+  .tag.blue { background: var(--blue-bg); border: 1px solid var(--blue-border); color: var(--blue); }
+  .tag.gold { background: var(--gold-bg); border: 1px solid #D4AA60; color: var(--goldl); }
 
-  /* Keywords */
-  .keyword-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    margin: 0.6rem 0;
-  }
-  .kw {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--text2);
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    padding: 0.25rem 0.6rem;
-    border-radius: 2px;
-  }
+  /* ── KEYWORDS ── */
+  .kw-section { margin: 0.7rem 0; }
+  .kw-label { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--text3); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.4rem; }
+  .kw-grid { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.8rem; }
+  .kw { font-family: 'DM Mono', monospace; font-size: 0.75rem; color: var(--text2); background: var(--bg3); border: 1px solid var(--border); padding: 0.25rem 0.6rem; border-radius: 2px; }
   .kw.neg { color: var(--red); border-color: #F5C0C0; background: var(--red-bg); text-decoration: line-through; text-decoration-color: #F5C0C0; }
+  .kw.exact { border-color: #D4AA60; background: var(--gold-bg); color: var(--goldl); }
+  .kw.phrase { border-color: var(--blue-border); background: var(--blue-bg); color: var(--blue); }
 
-  /* Nav sidebar dots */
-  .nav {
-    position: fixed;
-    right: 2rem;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-    z-index: 50;
-  }
-  .nav-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--border2);
-    cursor: pointer;
-    transition: background 0.2s, transform 0.2s;
-    border: none;
-  }
+  /* ── AD PREVIEW ── */
+  .ad-preview { background: var(--bg3); border: 1px solid var(--border); border-radius: 3px; padding: 0.9rem 1rem; margin: 0.8rem 0; font-size: 0.88rem; }
+  .ad-preview-label { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--text3); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.5rem; }
+  .ad-preview-url { font-family: 'DM Mono', monospace; font-size: 0.75rem; color: var(--green); margin-bottom: 0.25rem; }
+  .ad-preview-h1 { font-size: 1rem; font-weight: 600; color: var(--blue); margin-bottom: 0.1rem; }
+  .ad-preview-h2 { font-size: 0.88rem; color: var(--blue); margin-bottom: 0.35rem; opacity: 0.8; }
+  .ad-preview-desc { color: var(--text2); line-height: 1.5; font-size: 0.88rem; }
+
+  /* ── NAV ── */
+  .nav { position: fixed; right: 1.2rem; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 0.55rem; z-index: 50; }
+  .nav-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border2); cursor: pointer; transition: background 0.2s, transform 0.2s; border: none; }
   .nav-dot:hover, .nav-dot.active { background: var(--gold); transform: scale(1.5); }
-  .nav-dot[title]:hover::after {
-    content: attr(title);
-    position: absolute;
-    right: 14px;
-    background: var(--bg2);
-    color: var(--goldl);
-    font-family: 'DM Mono', monospace;
-    font-size: 0.68rem;
-    white-space: nowrap;
-    padding: 0.2rem 0.5rem;
-    border: 1px solid var(--border);
-    border-radius: 2px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  }
 
   @media (max-width: 700px) {
-    header { padding: 1.2rem 1rem; flex-direction: column; align-items: flex-start; }
-    .container { padding: 2rem 1rem 5rem; }
+    .tab-bar { flex-wrap: wrap; position: relative; }
+    .tab-brand { padding: 0.8rem 1rem; min-width: unset; width: 100%; border-right: none; border-bottom: 1px solid var(--border); flex-direction: row; gap: 1rem; align-items: center; }
+    .tabs { width: 100%; }
+    .progress-wrap { display: none; }
+    .container { padding: 1.5rem 1rem 4rem; }
     .nav { display: none; }
   }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="header-left">
+<div class="tab-bar">
+  <div class="tab-brand">
     <h1>SURYA</h1>
-    <p>Meta Ads · Execution Guide</p>
+    <p>Paid Ads Guide</p>
+  </div>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('meta')" id="tab-meta">
+      <span class="tab-icon">📱</span>
+      <span>Meta Ads</span>
+      <span class="tab-budget">CAD $640</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('google')" id="tab-google">
+      <span class="tab-icon">🔍</span>
+      <span>Google Ads</span>
+      <span class="tab-budget">CAD $210</span>
+    </button>
   </div>
   <div class="progress-wrap">
     <div class="progress-label">Completion</div>
-    <div class="progress-bar-outer">
-      <div class="progress-bar-inner" id="progressBar"></div>
-    </div>
+    <div class="progress-bar-outer"><div class="progress-bar-inner" id="progressBar"></div></div>
     <div class="progress-count" id="progressCount">0 / 0 steps complete</div>
   </div>
-</header>
+</div>
 
 <nav class="nav" id="sideNav"></nav>
 
+<!-- META PANEL -->
+<div class="panel active" id="panel-meta">
 <div class="container">
+
 
 <!-- ══════════════════════════════════════════════════════════════════
      PHASE 0 — PIXEL
@@ -1189,65 +875,604 @@
     </div>
   </div>
 </section>
+</div>
+</div>
 
-</div><!-- /container -->
+<!-- GOOGLE PANEL -->
+<div class="panel" id="panel-google">
+<div class="container">
+
+
+<!-- ══════════════════════════════════════════
+     PHASE 0 — ACCOUNT SETUP
+══════════════════════════════════════════ -->
+<section class="phase" id="phase-setup">
+  <div class="phase-label">Phase 0 — Do This First</div>
+  <div class="phase-title">Create Your Google Ads Account</div>
+  <div class="phase-desc">Launch this on Day 10–11, once Meta has been running for 10 days. By then people will be searching for you.</div>
+  <div class="gold-rule"></div>
+
+  <div class="step" id="step-1">
+    <div class="step-header" onclick="toggleStep('step-1')">
+      <div class="check-wrap"><div class="check" onclick="toggleDone(event,'step-1')"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div></div>
+      <div class="step-meta"><div class="step-num">0.1</div><div class="step-title">Create Google Ads account</div></div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="step-body">
+      <ol class="instructions">
+        <li data-n="1">Go to <strong>ads.google.com</strong> → click <strong>Start now</strong></li>
+        <li data-n="2">Sign in with your Google account (use the same account as your Google Analytics if you have it)</li>
+        <li data-n="3">When asked your main advertising goal → select <strong>"Get more website sales or sign-ups"</strong></li>
+        <li data-n="4">Google will try to push you into Smart campaigns — click <strong>"Switch to Expert Mode"</strong> at the bottom</li>
+        <li data-n="5">Select <strong>"Create an account without a campaign"</strong> — you will set campaigns up manually</li>
+        <li data-n="6">Set billing country, time zone (Sri Lanka UTC+5:30), currency: <strong>CAD</strong></li>
+        <li data-n="7">Enter billing details and set a <strong>monthly spending limit of CAD $220</strong></li>
+      </ol>
+      <div class="callout warning">Do NOT let Google auto-create a Smart Campaign. Always click "Switch to Expert Mode" — Smart campaigns give you no control over keywords, match types, or bids.</div>
+    </div>
+  </div>
+
+  <div class="step" id="step-2">
+    <div class="step-header" onclick="toggleStep('step-2')">
+      <div class="check-wrap"><div class="check" onclick="toggleDone(event,'step-2')"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div></div>
+      <div class="step-meta"><div class="step-num">0.2</div><div class="step-title">Install Google Tag (conversion tracking)</div></div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="step-body">
+      <ol class="instructions">
+        <li data-n="1">In Google Ads → <strong>Tools → Measurement → Conversions</strong> → click <strong>+ New conversion action</strong></li>
+        <li data-n="2">Select <strong>Website</strong> → enter your website URL → click <strong>Scan</strong></li>
+        <li data-n="3">Create a conversion action: name it <em>Enquiry / Contact Form</em> · Category: <em>Submit lead form</em> · Value: <em>Don't assign</em></li>
+        <li data-n="4">Create a second: name it <em>Page View — Collection</em> · Category: <em>Page view</em></li>
+        <li data-n="5">Google will give you a tag snippet — in Shopify Admin → <strong>Online Store → Themes → Edit code → theme.liquid</strong></li>
+        <li data-n="6">Paste the Google Tag snippet just before the <strong>&lt;/head&gt;</strong> closing tag → Save</li>
+        <li data-n="7">Use <strong>Google Tag Assistant</strong> Chrome extension to verify it's firing on your site</li>
+      </ol>
+      <div class="callout tip">When you move to a custom website, this tag moves with you — just paste it into the new site's &lt;head&gt;. No need to recreate conversion actions.</div>
+    </div>
+  </div>
+
+  <div class="step" id="step-3">
+    <div class="step-header" onclick="toggleStep('step-3')">
+      <div class="check-wrap"><div class="check" onclick="toggleDone(event,'step-3')"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div></div>
+      <div class="step-meta"><div class="step-num">0.3</div><div class="step-title">Link Google Ads to Google Analytics (if you have it)</div></div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="step-body">
+      <ol class="instructions">
+        <li data-n="1">Google Ads → <strong>Tools → Linked accounts → Google Analytics</strong></li>
+        <li data-n="2">Select your GA4 property → click <strong>Link</strong></li>
+        <li data-n="3">Enable <strong>Import Analytics conversions</strong> — this imports goals from GA into Google Ads</li>
+      </ol>
+      <div class="callout info">If you don't have Google Analytics yet, skip this step. Set it up later — it won't block your campaigns from running.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     PHASE 1 — SEARCH CAMPAIGN
+══════════════════════════════════════════ -->
+<section class="phase" id="phase-search">
+  <div class="phase-label">Phase 1 — Campaign 1</div>
+  <div class="phase-title">Search Campaign — High Intent Buyers</div>
+  <div class="phase-desc">These are people actively typing "Ceylon sapphire ring" right now. Your highest-intent audience. Budget: CAD $140 total.</div>
+  <div class="gold-rule"></div>
+
+  <div class="step" id="step-4">
+    <div class="step-header" onclick="toggleStep('step-4')">
+      <div class="check-wrap"><div class="check" onclick="toggleDone(event,'step-4')"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div></div>
+      <div class="step-meta"><div class="step-num">1.1</div><div class="step-title">Create Search Campaign — settings</div></div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="step-body">
+      <ol class="instructions">
+        <li data-n="1">Google Ads → <strong>+ New Campaign</strong> → Goal: <strong>Leads</strong></li>
+        <li data-n="2">Campaign type: <strong>Search</strong></li>
+        <li data-n="3">Select conversion: <em>Enquiry / Contact Form</em></li>
+        <li data-n="4">Campaign name: <em>SURYA — Search — High Intent</em></li>
+      </ol>
+      <table class="settings-table" style="margin-top:0.8rem">
+        <thead><tr><th>Setting</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Bidding</td><td><strong>Manual CPC</strong> — switch off "Enhanced CPC" for now</td></tr>
+          <tr><td>Budget</td><td><strong>CAD $5/day</strong> (= ~$140 over 28 days)</td></tr>
+          <tr><td>Networks</td><td>Search Network only — <strong>uncheck</strong> Display Network and Search Partners</td></tr>
+          <tr><td>Locations</td><td>Sri Lanka · UAE · United Kingdom · Australia · Canada · France</td></tr>
+          <tr><td>Languages</td><td>English + French</td></tr>
+          <tr><td>Start date</td><td>Day 10–11 of your Meta launch</td></tr>
+          <tr><td>Ad rotation</td><td>Rotate indefinitely (do not optimise yet)</td></tr>
+        </tbody>
+      </table>
+      <div class="callout warning">Uncheck Display Network. If left on, Google will spend your Search budget on banner ads you don't control — you have a separate Display campaign for that.</div>
+    </div>
+  </div>
+
+  <div class="step" id="step-5">
+    <div class="step-header" onclick="toggleStep('step-5')">
+      <div class="check-wrap"><div class="check" onclick="toggleDone(event,'step-5')"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div></div>
+      <div class="step-meta"><div class="step-num">1.2</div><div class="step-title">Ad Group 1 — Ceylon Sapphire (Tier 1 — Exact + Phrase)</div></div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="step-body">
+      <p>This is your highest-intent group. Buyers who know exactly what they want.</p>
+      <ol class="instructions">
+        <li data-n="1">Inside the Search Campaign → click <strong>+ New Ad Group</strong></li>
+        <li data-n="2">Ad Group name: <em>AG1 — Ceylon Sapphire — Exact</em></li>
+        <li data-n="3">Default bid: <strong>CAD $1.20</strong></li>
+      </ol>
+      <div class="kw-section">
+        <div class="kw-label">Tier 1 Keywords — add these exactly as shown (brackets = exact, quotes = phrase)</div>
+        <div class="kw-grid">
+          <span class="kw exact">[buy Ceylon sapphire ring]</span>
+          <span class="kw exact">[Ceylon blue sapphire jewellery]</span>
+          <span class="kw exact">[Ceylon sapphire ring]</span>
+          <span class="kw exact">[luxury Ceylon sapphire]</span>
+          <span class="kw exact">[custom sapphire engagement ring]</span>
+          <span class="kw phrase">"bespoke gemstone jewellery Sri Lanka"</span>
+          <span class="kw phrase">"fine Ceylon gemstone jewellery"</span>
+          <span class="kw phrase">"Ceylon sapphire Paris"</span>
+          <span class="kw phrase">"sapphire de Ceylan bijoux"</span>
+          <span class="kw phrase">"Ceylon origin sapphire"</span>
+          <span class="kw phrase">"certified Ceylon sapphire"</span>
+        </div>
+        <div class="callout info"><span class="tag blue">Exact</span> = [brackets] — only shows for that precise query. <span class="tag gold">Phrase</span> = "quotes" — shows when query contains that phrase. Use both.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step" id="step-6">
+    <div class="step-header" onclick="toggleStep('step-6')">
+      <div class="check-wrap"><div class="check" onclick="toggleDone(event,'step-6')"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div></div>
+      <div class="step-meta"><div class="step-num">1.3</div><div class="step-title">Ad Group 2 — Artisan & Collector (Tier 2)</div></div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="step-body">
+      <p>Slightly broader — people searching by craft or collector interest rather than pure gemstone provenance.</p>
+      <ol class="instructions">
+        <li data-n="1">Add new Ad Group: <em>AG2 — Artisan Collector — Phrase</em></li>
+        <li data-n="2">Default bid: <strong>CAD $1.00</strong></li>
+      </ol>
+      <div class="kw-section">
+        <div class="kw-grid">
+          <span class="kw phrase">"sculptural cut gemstone"</span>
+          <span class="kw phrase">"gemstone collector Sri Lanka"</span>
+          <span class="kw phrase">"rare sapphire collection"</span>
+          <span class="kw phrase">"artisan gemstone jewellery"</span>
+          <span class="kw phrase">"Colombo jewellery designer"</span>
+          <span class="kw phrase">"bespoke sapphire ring"</span>
+          <span class="kw phrase">"finest Ceylon blue sapphire"</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step" id="step-7">
+    <div class="step-header" onclick="toggleStep('step-7')">
+      <div class="check-wrap"><div class="check" onclick="toggleDone(event,'step-7')"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div></div>
+      <div class="step-meta"><div class="step-num">1.4</div><div class="step-title">Ad Group 3 — Competitor Alternatives (Tier 3)</div></div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="step-body">
+      <p>People searching for Cartier and Van Cleef sapphire — your lateral audience. Lower intent but high quality.</p>
+      <ol class="instructions">
+        <li data-n="1">Add new Ad Group: <em>AG3 — Competitor Adjacent — Broad</em></li>
+        <li data-n="2">Default bid: <strong>CAD $0.80</strong> — lower bid, broader audience</li>
+      </ol>
+      <div class="kw-section">
+        <div class="kw-grid">
+          <span class="kw phrase">"Cartier sapphire ring alternative"</span>
+          <span class="kw phrase">"Van Cleef gemstone jewellery"</span>
+          <span class="kw phrase">"haute joaillerie sapphire"</span>
+          <span class="kw phrase">"luxury sapphire jewellery"</span>
+          <span class="kw phrase">"unique sapphire ring"</span>
+        </div>
+      </div>
+      <div class="callout tip">Monitor this group closely — broad competitor keywords can spend quickly. After 7 days, add any irrelevant search terms as negative keywords.</div>
+    </div>
+  </div>
+
+  <div class="step" id="step-8">
+    <div class="step-header" onclick="toggleStep('step-8')">
+      <div class="check-wrap"><div class="check" onclick="toggleDone(event,'step-8')"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div></div>
+      <div class="step-meta"><div class="step-num">1.5</div><div class="step-title">Add negative keywords — campaign level</div></div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="step-body">
+      <p>Add these at <strong>campaign level</strong> so they apply to all 3 ad groups. Go to Keywords → Negative keywords → + Add.</p>
+      <div class="kw-section">
+        <div class="kw-grid">
+          <span class="kw neg">cheap</span>
+          <span class="kw neg">affordable</span>
+          <span class="kw neg">discount</span>
+          <span class="kw neg">sale</span>
+          <span class="kw neg">budget</span>
+          <span class="kw neg">synthetic</span>
+          <span class="kw neg">lab grown</span>
+          <span class="kw neg">lab-grown</span>
+          <span class="kw neg">simulated</span>
+          <span class="kw neg">fake</span>
+          <span class="kw neg">imitation</span>
+          <span class="kw neg">repair</span>
+          <span class="kw neg">cleaning</span>
+          <span class="kw neg">appraisal</span>
+          <span class="kw neg">school</span>
+          <span class="kw neg">course</span>
+          <span class="kw neg">education</span>
+          <span class="kw neg">wholesale</span>
+          <span class="kw neg">loose stone</span>
+          <span class="kw neg">raw rough</span>
+        </div>
+      </div>
+      <div class="callout warning">Negative keywords protect your budget from irrelevant clicks. Missing these means paying for people searching "cheap lab-grown sapphire" — the exact opposite of SURYA's buyer.</div>
+    </div>
+  </div>
+
+  <div class="step" id="step-9">
+    <div class="step-header" onclick="toggleStep('step-9')">
+      <div class="check-wrap"><div class="check" onclick="toggleDone(event,'step-9')"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div></div>
+      <div class="step-meta"><div class="step-num">1.6</div><div class="step-title">Create Search Ads — 3 ad variants</div></div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="step-body">
+      <p>Create one <strong>Responsive Search Ad (RSA)</strong> per ad group. RSAs let you enter up to 15 headlines and 4 descriptions — Google tests combinations. Enter all assets below exactly.</p>
+      <div class="callout info">For each ad group: click + New ad → Responsive search ad. Enter headlines and descriptions from the relevant copy set below. Pin Headline 1 to position 1 by clicking the pin icon.</div>
+
+      <div class="ad-preview">
+        <div class="ad-preview-label">Ad G1 — Collector (Ad Group 1 — Ceylon Sapphire)</div>
+        <div class="ad-preview-url">maerajewellery.com › collection › surya</div>
+        <div class="ad-preview-h1">Ceylon Gemstones. A Proprietary Cut.</div>
+        <div class="ad-preview-h2">Sculptural. Rare. Artisan-Made.</div>
+        <div class="ad-preview-desc">A cut engineered not to maximise size — but to awaken the geometry of light within each stone. Hand-selected Ceylon sapphires. Made to order. Enquire privately.</div>
+      </div>
+      <div class="copy-block">
+        <span class="copy-label">Ad G1 — All Headlines (paste into Headline fields 1–9)</span>
+        <button class="copy-btn" onclick="copyText(this, 'H1: Ceylon Gemstones. A Proprietary Cut.\nH2: Sculptural. Rare. Artisan-Made.\nH3: Hand-Selected Ceylon Sapphires\nH4: A Cut Engineered for Light\nH5: Maera Jewellery — SURYA Collection\nH6: Bespoke. Made to Order.\nH7: Blue, Pink & Bi-Colour Sapphires\nH8: Enquire Privately — Limited Pieces\nH9: From Ceylon. Cut for Collectors.')">Copy</button>
+        H1: Ceylon Gemstones. A Proprietary Cut. <em>(pin to position 1)</em><br>
+        H2: Sculptural. Rare. Artisan-Made.<br>
+        H3: Hand-Selected Ceylon Sapphires<br>
+        H4: A Cut Engineered for Light<br>
+        H5: Maera Jewellery — SURYA Collection<br>
+        H6: Bespoke. Made to Order.<br>
+        H7: Blue, Pink &amp; Bi-Colour Sapphires<br>
+        H8: Enquire Privately — Limited Pieces<br>
+        H9: From Ceylon. Cut for Collectors.
+      </div>
+      <div class="copy-block" style="margin-top:0.5rem">
+        <span class="copy-label">Ad G1 — Descriptions (paste into Description fields 1–3)</span>
+        <button class="copy-btn" onclick="copyText(this, 'D1: A cut engineered not to maximise size — but to awaken the geometry of light within each stone. Hand-selected Ceylon sapphires.\nD2: The SURYA cut is a proprietary sculptural geometry. Artisan-made. Made to order from Ceylon\'s finest rough. Priced from LKR 200,000.\nD3: Maera Jewellery. A gemstone collection built on provenance, craft and restraint. Enquire privately for availability.')">Copy</button>
+        D1: A cut engineered not to maximise size — but to awaken the geometry of light within each stone. Hand-selected Ceylon sapphires.<br>
+        D2: The SURYA cut is a proprietary sculptural geometry. Artisan-made. Made to order from Ceylon's finest rough. Priced from LKR 200,000.<br>
+        D3: Maera Jewellery. A gemstone collection built on provenance, craft and restraint. Enquire privately for availability.
+      </div>
+
+      <div class="ad-preview" style="margin-top:1.2rem">
+        <div class="ad-preview-label">Ad G2 — Engagement (Ad Group 1 — also add to AG2)</div>
+        <div class="ad-preview-url">maerajewellery.com › collection › surya</div>
+        <div class="ad-preview-h1">Ceylon Sapphire Engagement Rings</div>
+        <div class="ad-preview-h2">A Cut for a Once-in-a-Lifetime Piece</div>
+        <div class="ad-preview-desc">The SURYA cut was designed for a stone that must hold meaning for a lifetime. Hand-selected Ceylon sapphires. Bespoke settings. Enquire privately.</div>
+      </div>
+      <div class="copy-block">
+        <span class="copy-label">Ad G2 — All Headlines</span>
+        <button class="copy-btn" onclick="copyText(this, 'H1: Ceylon Sapphire Engagement Rings\nH2: A Cut Designed for a Lifetime\nH3: Bespoke Ceylon Sapphire Rings\nH4: Hand-Selected. Made to Order.\nH5: SURYA — Maera Jewellery\nH6: The Sapphire That Holds Meaning\nH7: Blue & Pink Ceylon Sapphires\nH8: Enquire for Custom Settings\nH9: From Ceylon\'s Finest Rough')">Copy</button>
+        H1: Ceylon Sapphire Engagement Rings <em>(pin to position 1)</em><br>
+        H2: A Cut Designed for a Lifetime<br>
+        H3: Bespoke Ceylon Sapphire Rings<br>
+        H4: Hand-Selected. Made to Order.<br>
+        H5: SURYA — Maera Jewellery<br>
+        H6: The Sapphire That Holds Meaning<br>
+        H7: Blue &amp; Pink Ceylon Sapphires<br>
+        H8: Enquire for Custom Settings<br>
+        H9: From Ceylon's Finest Rough
+      </div>
+      <div class="copy-block" style="margin-top:0.5rem">
+        <span class="copy-label">Ad G2 — Descriptions</span>
+        <button class="copy-btn" onclick="copyText(this, 'D1: The SURYA cut was designed for a stone that must hold meaning for a lifetime. Hand-selected Ceylon sapphires in bespoke settings.\nD2: A proprietary sculptural cut from Maera Jewellery. Made to order from Ceylon\'s finest rough. Blue, pink and bi-colour sapphires available.\nD3: Not mass-produced. Not repeated. Each SURYA piece is made once, for one person. Priced from LKR 200,000. Enquire privately.')">Copy</button>
+        D1: The SURYA cut was designed for a stone that must hold meaning for a lifetime. Hand-selected Ceylon sapphires in bespoke settings.<br>
+        D2: A proprietary sculptural cut from Maera Jewellery. Made to order from Ceylon's finest rough. Blue, pink and bi-colour sapphires available.<br>
+        D3: Not mass-produced. Not repeated. Each SURYA piece is made once, for one person. Priced from LKR 200,000. Enquire privately.
+      </div>
+
+      <div class="ad-preview" style="margin-top:1.2rem">
+        <div class="ad-preview-label">Ad G3 — International / France (Ad Group 3)</div>
+        <div class="ad-preview-url">maerajewellery.com › collection › surya</div>
+        <div class="ad-preview-h1">Ceylon Gemstones. A Cut Unlike Any Other.</div>
+        <div class="ad-preview-h2">The Provenance the Great Maisons Choose.</div>
+        <div class="ad-preview-desc">The same origin that supplies the finest archives in Paris. A proprietary sculptural cut, direct from the island. SURYA by Maera Jewellery.</div>
+      </div>
+      <div class="copy-block">
+        <span class="copy-label">Ad G3 — All Headlines (use for AG3 competitor group)</span>
+        <button class="copy-btn" onclick="copyText(this, 'H1: Ceylon Gemstones. A Cut Unlike Any Other.\nH2: The Provenance Cartier Chooses.\nH3: Direct From Ceylon\'s Finest Origin\nH4: A Sculptural Cut of Rare Precision\nH5: SURYA — Maera Jewellery\nH6: Rare. Artisan. Hand-Selected.\nH7: Enquire Privately — Limited Pieces\nH8: Ceylon Sapphires. Made to Order.\nH9: From the Island. For the World.')">Copy</button>
+        H1: Ceylon Gemstones. A Cut Unlike Any Other. <em>(pin to position 1)</em><br>
+        H2: The Provenance Cartier Chooses.<br>
+        H3: Direct From Ceylon's Finest Origin<br>
+        H4: A Sculptural Cut of Rare Precision<br>
+        H5: SURYA — Maera Jewellery<br>
+        H6: Rare. Artisan. Hand-Selected.<br>
+        H7: Enquire Privately — Limited Pieces<br>
+        H8: Ceylon Sapphires. Made to Order.<br>
+        H9: From the Island. For the World.
+      </div>
+      <div class="copy-block" style="margin-top:0.5rem">
+        <span class="copy-label">Ad G3 — Descriptions</span>
+        <button class="copy-btn" onclick="copyText(this, 'D1: The same origin that supplies the finest archives in Paris. A proprietary sculptural cut, now direct from the island. SURYA by Maera Jewellery.\nD2: Ceylon has always been the source. SURYA is the cut that does it justice. Hand-selected stones, artisan-made to order. Enquire privately.\nD3: A proprietary geometry carved to awaken the light within. Not sold in stores. Not repeated. Priced from LKR 200,000.')">Copy</button>
+        D1: The same origin that supplies the finest archives in Paris. A proprietary sculptural cut, now direct from the island. SURYA by Maera Jewellery.<br>
+        D2: Ceylon has always been the source. SURYA is the cut that does it justice. Hand-selected stones, artisan-made to order. Enquire privately.<br>
+        D3: A proprietary geometry carved to awaken the light within. Not sold in stores. Not repeated. Priced from LKR 200,000.
+      </div>
+      <div class="callout tip">Final URL for all ads: your collection page (not homepage). CTA in Ads Manager: leave blank — the description copy handles it.</div>
+    </div>
+  </div>
+
+  <div class="step" id="step-10">
+    <div class="step-header" onclick="toggleStep('step-10')">
+      <div class="check-wrap"><div class="check" onclick="toggleDone(event,'step-10')"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div></div>
+      <div class="step-meta"><div class="step-num">1.7</div><div class="step-title">Add ad extensions (Assets)</div></div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="step-body">
+      <p>Extensions (now called Assets) add extra lines to your ad — free clicks, more real estate. Add all of these at campaign level.</p>
+      <table class="settings-table">
+        <thead><tr><th>Asset Type</th><th>What to Enter</th></tr></thead>
+        <tbody>
+          <tr><td>Sitelinks</td><td>4 links: <em>The SURYA Cut · Ceylon Provenance · Enquire Privately · About Maera Jewellery</em> — each links to relevant page</td></tr>
+          <tr><td>Callouts</td><td><em>Hand-Selected Ceylon Stones · Made to Order · Proprietary Sculptural Cut · Limited Availability</em></td></tr>
+          <tr><td>Structured Snippets</td><td>Header: <em>Gemstones</em> · Values: <em>Blue Sapphire, Pink Sapphire, Bi-colour Sapphire, White Sapphire</em></td></tr>
+          <tr><td>Call Asset</td><td>Add your contact number if you have one — enables click-to-call on mobile</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     PHASE 2 — DISPLAY RETARGETING
+══════════════════════════════════════════ -->
+<section class="phase" id="phase-display">
+  <div class="phase-label">Phase 2 — Campaign 2</div>
+  <div class="phase-title">Display Retargeting Campaign</div>
+  <div class="phase-desc">Banner ads that follow your warm audiences around the web — reinforcing SURYA after they've seen the Instagram content. Budget: CAD $70 total.</div>
+  <div class="gold-rule"></div>
+
+  <div class="step" id="step-11">
+    <div class="step-header" onclick="toggleStep('step-11')">
+      <div class="check-wrap"><div class="check" onclick="toggleDone(event,'step-11')"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div></div>
+      <div class="step-meta"><div class="step-num">2.1</div><div class="step-title">Create Display Campaign — settings</div></div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="step-body">
+      <ol class="instructions">
+        <li data-n="1">+ New Campaign → Goal: <strong>Awareness and consideration</strong></li>
+        <li data-n="2">Campaign type: <strong>Display</strong></li>
+        <li data-n="3">Campaign name: <em>SURYA — Display — Retargeting</em></li>
+      </ol>
+      <table class="settings-table" style="margin-top:0.8rem">
+        <thead><tr><th>Setting</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Bidding</td><td><strong>Target CPM</strong> — set target at <strong>CAD $4</strong></td></tr>
+          <tr><td>Budget</td><td><strong>CAD $2.50/day</strong> (= ~$70 over 28 days)</td></tr>
+          <tr><td>Locations</td><td>Worldwide — follow the audience, not the geo</td></tr>
+          <tr><td>Frequency cap</td><td><strong>5 impressions per user per week</strong> — prevent over-exposure</td></tr>
+        </tbody>
+      </table>
+      <div class="callout tip">Launch Display on Day 15 — same time as your Meta BOFU. By then you'll have enough site visitors to build a meaningful retargeting audience in Google.</div>
+    </div>
+  </div>
+
+  <div class="step" id="step-12">
+    <div class="step-header" onclick="toggleStep('step-12')">
+      <div class="check-wrap"><div class="check" onclick="toggleDone(event,'step-12')"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div></div>
+      <div class="step-meta"><div class="step-num">2.2</div><div class="step-title">Build the retargeting audience in Google Ads</div></div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="step-body">
+      <ol class="instructions">
+        <li data-n="1">Google Ads → <strong>Tools → Shared Library → Audience Manager</strong></li>
+        <li data-n="2">Click <strong>+ New Audience → Website visitors</strong></li>
+        <li data-n="3">Name: <em>SURYA — All Website Visitors (30d)</em> · Tag: your Google Tag · Membership duration: <strong>30 days</strong></li>
+        <li data-n="4">Create a second: <em>SURYA — Collection Page Visitors (30d)</em> — URL contains your collection page URL</li>
+        <li data-n="5">Inside the Display Campaign → Ad Group → <strong>Audiences → Add audience → Browse → Your data segments</strong> → select both</li>
+      </ol>
+      <div class="callout info">Google requires at least <strong>100 users</strong> in a retargeting list before Display ads can serve. This is why you launch Display on Day 15 — you need 2 weeks of site traffic first.</div>
+    </div>
+  </div>
+
+  <div class="step" id="step-13">
+    <div class="step-header" onclick="toggleStep('step-13')">
+      <div class="check-wrap"><div class="check" onclick="toggleDone(event,'step-13')"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div></div>
+      <div class="step-meta"><div class="step-num">2.3</div><div class="step-title">Create Display Ad — Responsive Display Ad</div></div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="step-body">
+      <p>Google's Responsive Display Ad (RDA) takes your assets and creates banner combinations automatically. You provide the ingredients — Google assembles the ad.</p>
+      <ol class="instructions">
+        <li data-n="1">Inside Display Campaign → + New Ad → <strong>Responsive display ad</strong></li>
+        <li data-n="2">Upload <strong>images</strong> — use your SURYA_StaticPoster_4x5 and SURYA hero images. Required sizes: 1200×628 (landscape), 1200×1200 (square), 960×1200 (portrait)</li>
+        <li data-n="3">Upload your <strong>logo</strong> — Maera Jewellery wordmark on white background, square format</li>
+        <li data-n="4">Enter headlines and descriptions below</li>
+      </ol>
+      <div class="copy-block" style="margin-top:0.8rem">
+        <span class="copy-label">Display Ad — Headlines (enter all 5)</span>
+        <button class="copy-btn" onclick="copyText(this, 'H1: SURYA. A Cut Unlike Any Other.\nH2: Ceylon Gemstones. Proprietary Cut.\nH3: Limited. Unrepeatable. Yours.\nH4: Maera Jewellery — SURYA Collection\nH5: Hand-Selected Ceylon Sapphires')">Copy</button>
+        H1: SURYA. A Cut Unlike Any Other.<br>
+        H2: Ceylon Gemstones. Proprietary Cut.<br>
+        H3: Limited. Unrepeatable. Yours.<br>
+        H4: Maera Jewellery — SURYA Collection<br>
+        H5: Hand-Selected Ceylon Sapphires
+      </div>
+      <div class="copy-block" style="margin-top:0.5rem">
+        <span class="copy-label">Display Ad — Descriptions (enter all 3)</span>
+        <button class="copy-btn" onclick="copyText(this, 'D1: You have already seen it. Now consider what it means to own the only one.\nD2: A sculptural cut from Ceylon\'s finest rough. Made to order. Enquire privately.\nD3: Not sold in stores. Not repeated. Priced from LKR 200,000.')">Copy</button>
+        D1: You have already seen it. Now consider what it means to own the only one.<br>
+        D2: A sculptural cut from Ceylon's finest rough. Made to order. Enquire privately.<br>
+        D3: Not sold in stores. Not repeated. Priced from LKR 200,000.
+      </div>
+      <table class="settings-table" style="margin-top:0.8rem">
+        <thead><tr><th>Field</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Business name</td><td>Maera Jewellery</td></tr>
+          <tr><td>Final URL</td><td>Your collection page URL</td></tr>
+          <tr><td>Call to action</td><td>Select <strong>"Contact us"</strong> — the closest to "Enquire privately"</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     PHASE 3 — OPTIMISATION
+══════════════════════════════════════════ -->
+<section class="phase" id="phase-optimise">
+  <div class="phase-label">Phase 3 — Ongoing</div>
+  <div class="phase-title">Weekly Optimisation Rules</div>
+  <div class="phase-desc">Check Search campaigns every 3–4 days. Check Display weekly. Do not over-touch — let the data accumulate.</div>
+  <div class="gold-rule"></div>
+
+  <div class="step" id="step-14">
+    <div class="step-header" onclick="toggleStep('step-14')">
+      <div class="check-wrap"><div class="check" onclick="toggleDone(event,'step-14')"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div></div>
+      <div class="step-meta"><div class="step-num">3.1</div><div class="step-title">Search kill signals — act immediately on these</div></div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="step-body">
+      <table class="settings-table">
+        <thead><tr><th>Metric</th><th>Kill Threshold</th></tr></thead>
+        <tbody>
+          <tr><td>CTR (Search)</td><td>Below <span class="tag red">3%</span> after 50 impressions → rewrite the pinned headline</td></tr>
+          <tr><td>CPC Tier 1</td><td>Above <span class="tag red">CAD $1.50</span> → lower bid by CAD $0.20 and monitor</td></tr>
+          <tr><td>Irrelevant search terms</td><td>Check <strong>Search Terms report</strong> every 3 days → add anything irrelevant as negative keyword</td></tr>
+          <tr><td>AG3 (competitor) spend</td><td>If AG3 takes >40% of daily budget with zero conversions after 7 days → pause AG3</td></tr>
+          <tr><td>Display CTR</td><td>Below <span class="tag red">0.35%</span> after CAD $20 spend → swap images</td></tr>
+          <tr><td>Display CPM</td><td>Above <span class="tag red">CAD $6</span> → narrow audience or lower Target CPM bid</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="step" id="step-15">
+    <div class="step-header" onclick="toggleStep('step-15')">
+      <div class="check-wrap"><div class="check" onclick="toggleDone(event,'step-15')"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div></div>
+      <div class="step-meta"><div class="step-num">3.2</div><div class="step-title">Scale signals — when to increase spend</div></div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="step-body">
+      <table class="settings-table">
+        <thead><tr><th>Trigger</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td>Search CTR ≥ 5% on any ad group</td><td>Increase that ad group's bid by CAD $0.20. Add more exact match keywords in same theme.</td></tr>
+          <tr><td>Google outperforms Meta</td><td>Shift up to <strong>CAD $40</strong> from Meta TOFU budget into Google Search</td></tr>
+          <tr><td>Week 3 — Search performing well</td><td>Switch bidding to <strong>Target CPA</strong> — set target at 3× your average CPC</td></tr>
+          <tr><td>Display retargeting pool ≥ 500</td><td>Create a <strong>Similar Audiences</strong> segment from your retargeting list — target in a new Display ad group</td></tr>
+          <tr><td>Branded searches appearing</td><td>Add "Maera Jewellery" and "SURYA jewellery" as exact match keywords — these are zero competition, very cheap</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="step" id="step-16">
+    <div class="step-header" onclick="toggleStep('step-16')">
+      <div class="check-wrap"><div class="check" onclick="toggleDone(event,'step-16')"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div></div>
+      <div class="step-meta"><div class="step-num">3.3</div><div class="step-title">Search Terms report — weekly audit</div></div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="step-body">
+      <p>Every 4–5 days: <strong>Keywords → Search Terms</strong> tab. This shows the actual queries that triggered your ads.</p>
+      <ol class="instructions">
+        <li data-n="1">Look for irrelevant terms → right-click → <strong>Add as negative keyword</strong></li>
+        <li data-n="2">Look for high-performing terms you didn't think of → right-click → <strong>Add as keyword</strong> (add as exact match)</li>
+        <li data-n="3">Look for French queries appearing → if strong, create a separate French ad group with dedicated French-language ad copy</li>
+        <li data-n="4">Export the report weekly → build your negative keyword list progressively</li>
+      </ol>
+      <div class="callout tip">The Search Terms report is where Google Ads gets better over time. The more negative keywords you add, the less money you waste. Treat it like a weekly ritual — 10 minutes every 4 days.</div>
+    </div>
+  </div>
+
+  <div class="step" id="step-17">
+    <div class="step-header" onclick="toggleStep('step-17')">
+      <div class="check-wrap"><div class="check" onclick="toggleDone(event,'step-17')"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div></div>
+      <div class="step-meta"><div class="step-num">3.4</div><div class="step-title">How Meta + Google work together</div></div>
+      <div class="expand-btn">+</div>
+    </div>
+    <div class="step-body">
+      <p>The two platforms amplify each other — this is the echo chamber effect in action:</p>
+      <ol class="instructions">
+        <li data-n="1"><strong>Meta TOFU</strong> creates awareness → person sees SURYA on Instagram for the first time</li>
+        <li data-n="2"><strong>Person searches</strong> "Ceylon sapphire ring" on Google after seeing the Instagram content</li>
+        <li data-n="3"><strong>Google Search ad</strong> intercepts that search → they click through to your site</li>
+        <li data-n="4"><strong>Google Display retargeting</strong> follows them across other websites → reinforces SURYA</li>
+        <li data-n="5"><strong>Meta BOFU static</strong> retargets them on Instagram → "You have already seen it."</li>
+        <li data-n="6"><strong>DM enquiry</strong> → conversion</li>
+      </ol>
+      <div class="callout tip">When reviewing performance, look at <strong>assisted conversions</strong> in Google Analytics — not just last-click. Meta's contribution often shows up as assisted, not direct, because the final click comes through Google.</div>
+    </div>
+  </div>
+</section>
+</div>
+</div>
 
 <script>
-  function toggleStep(id) {
-    const el = document.getElementById(id);
-    el.classList.toggle('open');
-  }
-
+  function toggleStep(id) { document.getElementById(id).classList.toggle('open'); }
   function toggleDone(e, id) {
     e.stopPropagation();
-    const el = document.getElementById(id);
-    el.classList.toggle('done');
+    document.getElementById(id).classList.toggle('done');
     updateProgress();
   }
-
   function updateProgress() {
-    const all = document.querySelectorAll('.step');
-    const done = document.querySelectorAll('.step.done');
+    const activePanel = document.querySelector('.panel.active');
+    const all = activePanel ? activePanel.querySelectorAll('.step') : [];
+    const done = activePanel ? activePanel.querySelectorAll('.step.done') : [];
     const pct = all.length ? Math.round((done.length / all.length) * 100) : 0;
     document.getElementById('progressBar').style.width = pct + '%';
-    document.getElementById('progressCount').textContent = `${done.length} / ${all.length} steps complete`;
+    document.getElementById('progressCount').textContent = done.length + ' / ' + all.length + ' steps complete';
   }
-
   function copyText(btn, text) {
     navigator.clipboard.writeText(text).then(() => {
       const orig = btn.textContent;
       btn.textContent = 'Copied';
-      btn.style.background = '#0A2A00';
-      setTimeout(() => {
-        btn.textContent = orig;
-        btn.style.background = '';
-      }, 1800);
+      btn.style.background = '#E8F5EA';
+      setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 1800);
     });
   }
 
-  // Side nav
-  const phases = document.querySelectorAll('.phase');
-  const nav = document.getElementById('sideNav');
-  const titles = ['Pixel', 'Foundations', 'Campaign A', 'Campaign B', 'Rules'];
-  phases.forEach((ph, i) => {
-    const dot = document.createElement('button');
-    dot.className = 'nav-dot';
-    dot.title = titles[i] || '';
-    dot.onclick = () => ph.scrollIntoView({ behavior: 'smooth' });
-    nav.appendChild(dot);
-  });
+  const metaPhases = ['Pixel', 'Foundations', 'Campaign A', 'Campaign B', 'Rules'];
+  const googlePhases = ['Account Setup', 'Search Campaign', 'Display', 'Optimisation'];
 
-  // Scroll observer for nav dots
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const idx = Array.from(phases).indexOf(entry.target);
-        document.querySelectorAll('.nav-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
-      }
+  function buildNav(panelId, titles) {
+    const nav = document.getElementById('sideNav');
+    nav.innerHTML = '';
+    const panel = document.getElementById(panelId);
+    const phases = panel.querySelectorAll('.phase');
+    phases.forEach((ph, i) => {
+      const dot = document.createElement('button');
+      dot.className = 'nav-dot';
+      dot.title = titles[i] || '';
+      dot.onclick = () => ph.scrollIntoView({ behavior: 'smooth' });
+      nav.appendChild(dot);
     });
-  }, { threshold: 0.3 });
-  phases.forEach(p => observer.observe(p));
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const idx = Array.from(phases).indexOf(e.target);
+          document.querySelectorAll('.nav-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+        }
+      });
+    }, { threshold: 0.3 });
+    phases.forEach(p => observer.observe(p));
+  }
 
+  function switchTab(tab) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('panel-' + tab).classList.add('active');
+    document.getElementById('tab-' + tab).classList.add('active');
+    window.scrollTo(0, 0);
+    if (tab === 'meta') buildNav('panel-meta', metaPhases);
+    else buildNav('panel-google', googlePhases);
+    updateProgress();
+  }
+
+  // Init
+  buildNav('panel-meta', metaPhases);
   updateProgress();
 </script>
 </body>
